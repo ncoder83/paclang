@@ -1,0 +1,13 @@
+D:\software\PacLang\bin\Debug\netcoreapp3.1\PacLang.exe
+D:\software\PacLang\bin\Debug\netcoreapp3.1\PacLang.deps.json
+D:\software\PacLang\bin\Debug\netcoreapp3.1\PacLang.runtimeconfig.json
+D:\software\PacLang\bin\Debug\netcoreapp3.1\PacLang.runtimeconfig.dev.json
+D:\software\PacLang\bin\Debug\netcoreapp3.1\PacLang.dll
+D:\software\PacLang\bin\Debug\netcoreapp3.1\PacLang.pdb
+D:\software\PacLang\obj\Debug\netcoreapp3.1\PacLang.csprojAssemblyReference.cache
+D:\software\PacLang\obj\Debug\netcoreapp3.1\PacLang.AssemblyInfoInputs.cache
+D:\software\PacLang\obj\Debug\netcoreapp3.1\PacLang.AssemblyInfo.cs
+D:\software\PacLang\obj\Debug\netcoreapp3.1\PacLang.csproj.CoreCompileInputs.cache
+D:\software\PacLang\obj\Debug\netcoreapp3.1\PacLang.dll
+D:\software\PacLang\obj\Debug\netcoreapp3.1\PacLang.pdb
+D:\software\PacLang\obj\Debug\netcoreapp3.1\PacLang.genruntimeconfig.cache
