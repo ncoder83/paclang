@@ -16,7 +16,7 @@
         
         
         // Expressions
-        NumberExpression,
+        LiteralExpression,
         BinaryExpression,
         ParenthesizeExpression
     }
