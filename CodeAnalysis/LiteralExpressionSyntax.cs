@@ -3,15 +3,15 @@ using System.Collections.Generic;
 
 namespace PacLang
 {
-    sealed class NumberSyntax : ExpressionSyntax
+    public sealed class LiteralExpressionSyntax : ExpressionSyntax
     {
         public override SyntaxKind Kind => SyntaxKind.NumberExpression;
 
         public SyntaxToken NumberToken { get; }
 
-        public NumberSyntax(SyntaxToken numberToken)
+        public LiteralExpressionSyntax(SyntaxToken literalToken)
         {
-            NumberToken = numberToken;
+            NumberToken = literalToken;
         }
 
         public override IEnumerable<SyntaxNode> GetChildren()

@@ -2,7 +2,7 @@
 
 namespace PacLang
 {
-    public class Evaluator 
+    public sealed class Evaluator 
     {
         private readonly ExpressionSyntax _root;
 
@@ -19,7 +19,7 @@ namespace PacLang
 
         private int EvaluateExpression(ExpressionSyntax node)
         {
-            if(node is NumberSyntax n)
+            if(node is LiteralExpressionSyntax n)
                 return (int)n.NumberToken.Value;
 
             if (node is BinaryExpressionSyntax b) 

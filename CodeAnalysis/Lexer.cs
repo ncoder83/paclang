@@ -6,7 +6,7 @@ namespace PacLang
     /// <summary>
     /// Produce tokens, leaves in the tree
     /// </summary>
-    public class Lexer
+    internal sealed class Lexer
     {
         private readonly string _text;
         private int _position;
