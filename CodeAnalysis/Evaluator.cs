@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq.Expressions;
 
 namespace PacLang
 {
@@ -22,6 +23,19 @@ namespace PacLang
             if(node is LiteralExpressionSyntax n)
                 return (int)n.NumberToken.Value;
 
+
+            if(node is UnaryExpressionSyntax u)
+            {
+                var operand = EvaluateExpression(u.Operand);
+                
+                if (u.OperatorToken.Kind == SyntaxKind.PlusToken)
+                    return operand;
+                else if (u.OperatorToken.Kind == SyntaxKind.MinusToken)
+                    return -operand;
+                else
+                    throw new Exception($"Unexpected unary behavior {u.OperatorToken.Kind}");
+            }
+
             if (node is BinaryExpressionSyntax b) 
             {
                 var left = EvaluateExpression(b.Left);
@@ -35,7 +49,6 @@ namespace PacLang
                     return left * right;
                 else if (b.OperatorToken.Kind == SyntaxKind.SlashToken)
                     return left / right;
-
                 else
                     throw new Exception($"Unexpected binary behavior {b.OperatorToken.Kind}");
 

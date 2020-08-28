@@ -25,5 +25,4 @@ namespace PacLang
             yield return Right;
         }
     }
-
 }

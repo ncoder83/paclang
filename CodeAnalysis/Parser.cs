@@ -2,7 +2,13 @@
 
 namespace PacLang
 {
-
+    //
+    // +1 
+    // -1 * -3
+    // -(3 + 3)
+    //
+    //
+    //
     internal sealed class Parser
     {
         private readonly SyntaxToken[] _tokens;
@@ -58,6 +64,7 @@ namespace PacLang
             _diagnostics.Add($"ERROR: Unexpected token <{Current.Kind}>, expected <{kind}>");
             return new SyntaxToken(kind, Current.Position, null, null);
         }
+
         public SyntaxTree Parse()
         {
             var expression = ParseExpression();
@@ -68,7 +75,21 @@ namespace PacLang
 
         private ExpressionSyntax ParseExpression(int parentPrecedence = 0)
         {
-            var left = ParsePrimaryExpression();
+            ExpressionSyntax left;
+
+            
+            var unirayOperatorPrecedence = Current.Kind.GetUnaryOperatorPrecedence();
+            
+            if(unirayOperatorPrecedence != 0 && unirayOperatorPrecedence >= parentPrecedence)
+            {
+                var operatorToken = NextToken();
+                var operand = ParseExpression(unirayOperatorPrecedence);
+                left = new UnaryExpressionSyntax(operatorToken, operand);
+            }
+            else
+            {                    
+                left = ParsePrimaryExpression();
+            }
 
             while (true)
             {
