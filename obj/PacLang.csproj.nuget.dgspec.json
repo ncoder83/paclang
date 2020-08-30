@@ -1,30 +1,28 @@
 {
   "format": 1,
   "restore": {
-    "D:\\software\\PacLang\\PacLang.csproj": {}
+    "/Users/pascalanglade/Documents/Sandbox/paclang/PacLang.csproj": {}
   },
   "projects": {
-    "D:\\software\\PacLang\\PacLang.csproj": {
+    "/Users/pascalanglade/Documents/Sandbox/paclang/PacLang.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\software\\PacLang\\PacLang.csproj",
+        "projectUniqueName": "/Users/pascalanglade/Documents/Sandbox/paclang/PacLang.csproj",
         "projectName": "PacLang",
-        "projectPath": "D:\\software\\PacLang\\PacLang.csproj",
-        "packagesPath": "C:\\Users\\Pascal Anglade\\.nuget\\packages\\",
-        "outputPath": "D:\\software\\PacLang\\obj\\",
+        "projectPath": "/Users/pascalanglade/Documents/Sandbox/paclang/PacLang.csproj",
+        "packagesPath": "/Users/pascalanglade/.nuget/packages/",
+        "outputPath": "/Users/pascalanglade/Documents/Sandbox/paclang/obj/",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
+          "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Pascal Anglade\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/Users/pascalanglade/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "netcoreapp3.1"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -55,7 +53,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.401/RuntimeIdentifierGraph.json"
         }
       }
     }

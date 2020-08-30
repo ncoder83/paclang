@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using PacLang.CodeAnalysis.Syntax;
 
 namespace PacLang
 {

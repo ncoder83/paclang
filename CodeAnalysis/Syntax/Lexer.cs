@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace PacLang
+namespace PacLang.CodeAnalysis.Syntax
 {
     /// <summary>
     /// Produce tokens, leaves in the tree

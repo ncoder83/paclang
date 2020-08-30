@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace PacLang
+namespace PacLang.CodeAnalysis.Syntax
 {
     //
     // +1 
