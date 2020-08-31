@@ -8,28 +8,30 @@
     ".NETCoreApp,Version=v3.1": []
   },
   "packageFolders": {
-    "/Users/pascalanglade/.nuget/packages/": {},
-    "/usr/local/share/dotnet/sdk/NuGetFallbackFolder": {}
+    "C:\\Users\\Pascal Anglade\\.nuget\\packages\\": {},
+    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/pascalanglade/Documents/Sandbox/paclang/PacLang.csproj",
+      "projectUniqueName": "D:\\software\\PacLang\\PacLang.csproj",
       "projectName": "PacLang",
-      "projectPath": "/Users/pascalanglade/Documents/Sandbox/paclang/PacLang.csproj",
-      "packagesPath": "/Users/pascalanglade/.nuget/packages/",
-      "outputPath": "/Users/pascalanglade/Documents/Sandbox/paclang/obj/",
+      "projectPath": "D:\\software\\PacLang\\PacLang.csproj",
+      "packagesPath": "C:\\Users\\Pascal Anglade\\.nuget\\packages\\",
+      "outputPath": "D:\\software\\PacLang\\obj\\",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
-        "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
+        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
       ],
       "configFilePaths": [
-        "/Users/pascalanglade/.nuget/NuGet/NuGet.Config"
+        "C:\\Users\\Pascal Anglade\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
         "netcoreapp3.1"
       ],
       "sources": {
+        "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
         "https://api.nuget.org/v3/index.json": {}
       },
       "frameworks": {
@@ -60,7 +62,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/local/share/dotnet/sdk/3.1.401/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.401\\RuntimeIdentifierGraph.json"
       }
     }
   }

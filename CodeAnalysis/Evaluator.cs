@@ -1,14 +1,15 @@
 ﻿using System;
 using System.Linq.Expressions;
+using PacLang.Binding;
 using PacLang.CodeAnalysis.Syntax;
 
 namespace PacLang
 {
-    public sealed class Evaluator 
+    internal sealed class Evaluator 
     {
-        private readonly ExpressionSyntax _root;
+        private readonly BoundExpression _root;
 
-        public Evaluator(ExpressionSyntax root)
+        public Evaluator(BoundExpression root)
         {
             _root = root;
         }
@@ -19,45 +20,39 @@ namespace PacLang
         }
 
 
-        private int EvaluateExpression(ExpressionSyntax node)
+        private int EvaluateExpression(BoundExpression node)
         {
-            if(node is LiteralExpressionSyntax n)
-                return (int)n.NumberToken.Value;
+            if(node is BoundLiteralExpression n)
+                return (int)n.Value;
 
 
-            if(node is UnaryExpressionSyntax u)
+            if(node is BoundUnaryExpression u)
             {
                 var operand = EvaluateExpression(u.Operand);
-                
-                if (u.OperatorToken.Kind == SyntaxKind.PlusToken)
-                    return operand;
-                else if (u.OperatorToken.Kind == SyntaxKind.MinusToken)
-                    return -operand;
-                else
-                    throw new Exception($"Unexpected unary behavior {u.OperatorToken.Kind}");
+
+                return u.OperatorKind switch
+                {
+                    BoundUnaryOperatorKind.Identity => operand,
+                    BoundUnaryOperatorKind.Negation => -operand,
+                    _ => throw new Exception($"Unexpected unary behavior {u.OperatorKind}"),
+                };
             }
 
-            if (node is BinaryExpressionSyntax b) 
+            if (node is BoundBinaryExpression b) 
             {
                 var left = EvaluateExpression(b.Left);
                 var right = EvaluateExpression(b.Right);
 
-                if (b.OperatorToken.Kind == SyntaxKind.PlusToken)
-                    return left + right;
-                else if (b.OperatorToken.Kind == SyntaxKind.MinusToken)
-                    return left - right;
-                else if (b.OperatorToken.Kind == SyntaxKind.StarToken)
-                    return left * right;
-                else if (b.OperatorToken.Kind == SyntaxKind.SlashToken)
-                    return left / right;
-                else
-                    throw new Exception($"Unexpected binary behavior {b.OperatorToken.Kind}");
-
+                return b.OperatorKind switch
+                {
+                    BoundBinaryOperatorKind.Addition => left + right,
+                    BoundBinaryOperatorKind.Subtraction => left - right,
+                    BoundBinaryOperatorKind.Mulitplication => left * right,
+                    BoundBinaryOperatorKind.Division => left / right,
+                    _ => throw new Exception($"Unexpected binary behavior {b.OperatorKind}"),
+                };
             }
-
-            if (node is ParenthesizedExpressionSyntax p)
-                return EvaluateExpression(p.Expression);
-
+         
             throw new Exception($"Unexpected node {node.Kind}");
         }
     }

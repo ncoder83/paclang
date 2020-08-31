@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using PacLang.Binding;
 using PacLang.CodeAnalysis.Syntax;
 
 namespace PacLang
@@ -31,6 +33,10 @@ namespace PacLang
                 }
 
                 var syntaxTree = SyntaxTree.Parse(line);
+                
+                var binder = new Binder();
+                var boundExpression = binder.BindExpression(syntaxTree.Root);
+                IReadOnlyList<string> diagnostics = syntaxTree.Diagnostics.Concat(binder.Diagnostics).ToArray();
 
 
                 if (showTree)
@@ -40,9 +46,11 @@ namespace PacLang
                     Console.ResetColor();
                 }
 
-                if (!syntaxTree.Diagnostics.Any())
+                
+
+                if (!diagnostics.Any())
                 {
-                    var e = new Evaluator(syntaxTree.Root);
+                    var e = new Evaluator(boundExpression);
                     var result = e.Evaluate();
                     Console.WriteLine(result);
                 }

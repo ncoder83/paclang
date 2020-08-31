@@ -1,6 +1,9 @@
 namespace PacLang.Binding
 {
-    public enum BoundNodeKind
+    internal enum BoundNodeKind
     {
+        UnaryExpression,
+        LiteralExpression,
+        BinaryExpression
     }
 }
