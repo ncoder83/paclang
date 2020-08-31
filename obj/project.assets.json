@@ -14,9 +14,9 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\software\\PacLang\\PacLang.csproj",
-      "projectName": "PacLang",
-      "projectPath": "D:\\software\\PacLang\\PacLang.csproj",
+      "projectUniqueName": "D:\\software\\PacLang\\PacRunner.csproj",
+      "projectName": "PacRunner",
+      "projectPath": "D:\\software\\PacLang\\PacRunner.csproj",
       "packagesPath": "C:\\Users\\Pascal Anglade\\.nuget\\packages\\",
       "outputPath": "D:\\software\\PacLang\\obj\\",
       "projectStyle": "PackageReference",
