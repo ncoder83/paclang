@@ -58,7 +58,7 @@ namespace PacLang
                 {                    
                     Console.ForegroundColor = ConsoleColor.DarkRed;
 
-                    foreach (var item in syntaxTree.Diagnostics)
+                    foreach (var item in diagnostics)
                         Console.WriteLine(item);
 
                     Console.ResetColor();

@@ -22,3 +22,4 @@ D:\software\PacLang\bin\Debug\netcoreapp3.1\PacLang.runtimeconfig.dev.json
 D:\software\PacLang\bin\Debug\netcoreapp3.1\PacLang.dll
 D:\software\PacLang\bin\Debug\netcoreapp3.1\PacLang.pdb
 D:\software\PacLang\obj\Debug\netcoreapp3.1\PacLang.genruntimeconfig.cache
+D:\software\PacLang\obj\Debug\netcoreapp3.1\PacLang.csprojAssemblyReference.cache

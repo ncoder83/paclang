@@ -1,4 +1,6 @@
-﻿namespace PacLang.CodeAnalysis.Syntax
+﻿using System;
+
+namespace PacLang.CodeAnalysis.Syntax
 {
     internal static class SyntaxFacts
     {
@@ -50,7 +52,14 @@
             }
         }
 
-
-        
+        internal static SyntaxKind GetKeywordKind(string text)
+        {
+            return text switch
+            {
+                "true" => SyntaxKind.TrueKeyword,
+                "false" => SyntaxKind.FalseKeyword,
+                _ => SyntaxKind.IdentifierToken
+            };            
+        }
     }
 }
