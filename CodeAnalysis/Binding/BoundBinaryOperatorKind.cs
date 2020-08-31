@@ -7,7 +7,9 @@
         Mulitplication,
         Division,
         LogicalAnd,
-        LogicalOr
+        LogicalOr,
+        Equals,
+        NotEquals
     }
 
 }

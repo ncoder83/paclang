@@ -107,9 +107,7 @@ namespace PacLang.CodeAnalysis.Syntax
                 case '(':
                     return new SyntaxToken(SyntaxKind.OpenParenthesisToken, _position++, "(", null);
                 case ')':
-                    return new SyntaxToken(SyntaxKind.CloseParenthesisToken, _position++, ")", null);
-                case '!':
-                    return new SyntaxToken(SyntaxKind.BangToken, _position++, "!", null);
+                    return new SyntaxToken(SyntaxKind.CloseParenthesisToken, _position++, ")", null);                
                 case '&':
                     if(Lookahead == '&')
                         return new SyntaxToken(SyntaxKind.AmpersandAmpersandToken, _position += 2, "&&", null);
@@ -118,8 +116,18 @@ namespace PacLang.CodeAnalysis.Syntax
                     if (Lookahead == '|')
                         return new SyntaxToken(SyntaxKind.PipePipeToken, _position += 2, "||", null);
                     break;
+                case '=':
+                    if (Lookahead == '=')
+                        return new SyntaxToken(SyntaxKind.EqualsEqualsToken, _position += 2, "==", null);
+                    break;
+                case '!':
+                    if (Lookahead == '=')
+                        return new SyntaxToken(SyntaxKind.BangEqualsToken, _position += 2, "!=", null);
+                    else
+                        return new SyntaxToken(SyntaxKind.BangToken, _position++, "!", null);                    
+
             }
-            
+
             _diagnostics.Add($"ERROR: bad character input: {Current}"); 
 
             return new SyntaxToken(SyntaxKind.BadToken, _position++, _text.Substring(_position - 1, 1), null);
