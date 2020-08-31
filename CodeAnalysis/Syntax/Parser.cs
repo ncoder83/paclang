@@ -123,7 +123,7 @@ namespace PacLang.CodeAnalysis.Syntax
                 case SyntaxKind.FalseKeyword:
                 {
                     var keyworkdToken = NextToken();
-                    var value = Current.Kind == SyntaxKind.TrueKeyword;
+                    var value = keyworkdToken.Kind == SyntaxKind.TrueKeyword;
                     return new LiteralExpressionSyntax(keyworkdToken, value);
                 }
                 default: 

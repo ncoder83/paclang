@@ -11,6 +11,9 @@
         MinusToken,
         StarToken,
         SlashToken,
+        BangToken,
+        AmpersandAmpersandToken,
+        PipePipeToken,
         OpenParenthesisToken,
         CloseParenthesisToken,
         IdentifierToken,
@@ -24,5 +27,6 @@
         UnaryExpression,
         BinaryExpression,        
         ParenthesizeExpression,
+        
     }
 }
