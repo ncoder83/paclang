@@ -17,6 +17,7 @@ namespace PacLang.Binding
                 SyntaxKind.LiteralExpression => BindLiteralExpression((LiteralExpressionSyntax)syntax),
                 SyntaxKind.UnaryExpression => BindUnaryExpression((UnaryExpressionSyntax)syntax),
                 SyntaxKind.BinaryExpression => BindBinaryExpression((BinaryExpressionSyntax)syntax),
+                SyntaxKind.ParenthesizeExpression => BindExpression(((ParenthesizedExpressionSyntax)syntax).Expression),
                 _ => throw new Exception($"Unexpected syntax {syntax.Kind}"),
             };
         }
