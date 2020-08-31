@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace PacLang
+namespace PacLang.CodeAnalysis.Syntax
 {
-    sealed class BinaryExpressionSyntax : ExpressionSyntax
+    public sealed class BinaryExpressionSyntax : ExpressionSyntax
     {
         public BinaryExpressionSyntax(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
         {
@@ -25,5 +25,4 @@ namespace PacLang
             yield return Right;
         }
     }
-
 }
