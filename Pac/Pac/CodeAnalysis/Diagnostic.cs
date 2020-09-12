@@ -1,4 +1,6 @@
-﻿namespace PacLang
+﻿using System.Collections;
+
+namespace PacLang
 {
     public sealed class Diagnostic
     {
