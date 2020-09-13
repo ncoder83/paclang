@@ -113,16 +113,20 @@
           if (Lookahead == '|')
           {
             _position += 2;
-            return new SyntaxToken(SyntaxKind.PipePipeToken, start , "||", null);
+            return new SyntaxToken(SyntaxKind.PipePipeToken, start, "||", null);
           }
           break;
         case '=':
           if (Lookahead == '=')
           {
             _position += 2;
-            return new SyntaxToken(SyntaxKind.EqualsEqualsToken, start , "==", null);
+            return new SyntaxToken(SyntaxKind.EqualsEqualsToken, start, "==", null);
           }
-          break;
+          else
+          {
+            _position += 1;
+            return new SyntaxToken(SyntaxKind.EqualsToken, start, "=", null);
+          }
         case '!':
           if (Lookahead == '=')
           {
