@@ -7,6 +7,12 @@ namespace PacLang.Binding
   internal sealed class Binder
   {
     private readonly DiagnosticBag _diagnostics = new DiagnosticBag();
+    private readonly Dictionary<string, object> _variables;
+
+    public Binder(Dictionary<string, object> variables)
+    {
+      _variables = variables;
+    }
 
     public DiagnosticBag Diagnostics => _diagnostics;
 
@@ -38,19 +44,26 @@ namespace PacLang.Binding
 
     private BoundExpression BindNameExpression(NameExpresionSyntax syntax)
     {
-      throw new NotImplementedException();
+      var name = syntax.IdentifierToken.Text;
+      if (!_variables.TryGetValue(name, out var value))
+      {
+        _diagnostics.ReportUndefinedName(syntax.IdentifierToken.Span, name);
+        return new BoundLiteralExpression(0);
+      }
+
+      //var type = value.GetType() ?? typeof(object);
+      var type = typeof(int);
+      return new BoundVariableExpression(name, type);
     }
 
 
     private BoundExpression BindAssignmentExpression(AssignmentExpresionSyntax syntax)
     {
-      throw new NotImplementedException();
+      var name = syntax.IdentifierToken.Text;
+      var boundExpression = BindExpression(syntax.Expression);
+      return new BoundAssigmentExpression(name, boundExpression);
     }
 
-
-    
-
-   
     private BoundExpression BindUnaryExpression(UnaryExpressionSyntax syntax)
     {
       var boundOperand = BindExpression(syntax.Operand);
