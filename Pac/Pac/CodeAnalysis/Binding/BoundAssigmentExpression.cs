@@ -15,7 +15,7 @@ namespace PacLang.Binding
     public string Name { get; }
     public BoundExpression Expression { get; }
 
-    public override Type Type => throw new NotImplementedException();
+        public override Type Type => Expression.Type;
 
     public override BoundNodeKind Kind => BoundNodeKind.AssigmentExpression;
   }

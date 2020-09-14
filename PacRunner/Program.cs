@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using PacLang.CodeAnalysis.Syntax;
 
@@ -9,7 +10,8 @@ namespace PacLang
     {
         private static void Main()
         {
-            var showTree = true;
+            var showTree = false;
+            var variables = new Dictionary<string, object>();
 
             while (true)
             {
@@ -32,7 +34,7 @@ namespace PacLang
 
                 var syntaxTree = SyntaxTree.Parse(line);
                 var compilation = new Compilation(syntaxTree);
-                var result = compilation.Evaluate(null);
+                var result = compilation.Evaluate(variables);
                 
                 var diagnostics = result.Diagnostics;
 

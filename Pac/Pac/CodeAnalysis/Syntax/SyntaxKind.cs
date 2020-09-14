@@ -1,37 +1,37 @@
 ﻿namespace PacLang.CodeAnalysis.Syntax
 {
-  public enum SyntaxKind
-  {
-    // Tokens
-    BadToken,
-    EndOfFileToken,
-    WhiteSpaceToken,
-    NumberToken,
-    PlusToken,
-    MinusToken,
-    StarToken,
-    SlashToken,
-    BangToken,
-    EqualsToken,
-    AmpersandAmpersandToken,
-    PipePipeToken,
-    EqualsEqualsToken,
-    BangEqualsToken,
-    OpenParenthesisToken,
-    CloseParenthesisToken,
-    IdentifierToken,
+    public enum SyntaxKind
+    {
+        // Tokens
+        BadToken,
+        EndOfFileToken,
+        WhiteSpaceToken,
+        NumberToken,
+        PlusToken,
+        MinusToken,
+        StarToken,
+        SlashToken,
+        BangToken,
+        EqualsToken,
+        AmpersandAmpersandToken,
+        PipePipeToken,
+        EqualsEqualsToken,
+        BangEqualsToken,
+        OpenParenthesisToken,
+        CloseParenthesisToken,
+        IdentifierToken,
 
+        //Keywords
+        FalseKeyword,
+        TrueKeyword,        
 
-    //Keywords
-    FalseKeyword,
-    TrueKeyword,
+        // Expressions
+        LiteralExpression,
+        NameExpression,
+        UnaryExpression,
+        BinaryExpression,        
+        ParenthesizeExpression,
 
-    // Expressions
-    LiteralExpression,
-    NameExpression,
-    UnaryExpression,
-    BinaryExpression,
-    ParenthesizeExpression,
-    AssigmentExpression,
-  }
+        AssigmentExpression,        
+    }
 }
