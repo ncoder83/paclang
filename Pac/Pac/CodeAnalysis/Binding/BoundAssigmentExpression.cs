@@ -2,21 +2,21 @@
 
 namespace PacLang.Binding
 {
-  internal sealed class BoundAssigmentExpression : BoundExpression
-  {
-    
-
-    public BoundAssigmentExpression(string name, BoundExpression expression)
+    internal sealed class BoundAssigmentExpression : BoundExpression
     {
-      Name = name;
-      Expression = expression;
-    }
 
-    public string Name { get; }
-    public BoundExpression Expression { get; }
+
+        public BoundAssigmentExpression(VariableSymbol variable, BoundExpression expression)
+        {
+            Variable = variable;
+            Expression = expression;
+        }
+
+        public VariableSymbol Variable { get; }
+        public BoundExpression Expression { get; }
 
         public override Type Type => Expression.Type;
 
-    public override BoundNodeKind Kind => BoundNodeKind.AssigmentExpression;
-  }
+        public override BoundNodeKind Kind => BoundNodeKind.AssigmentExpression;
+    }
 }
