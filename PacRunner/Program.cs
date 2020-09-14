@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using PacLang.Binding;
 using PacLang.CodeAnalysis.Syntax;
 
 namespace PacLang
@@ -11,7 +10,8 @@ namespace PacLang
     {
         private static void Main()
         {
-            var showTree = true;
+            var showTree = false;
+            var variables = new Dictionary<VariableSymbol, object>();
 
             while (true)
             {
@@ -33,10 +33,10 @@ namespace PacLang
                 }
 
                 var syntaxTree = SyntaxTree.Parse(line);
+                var compilation = new Compilation(syntaxTree);
+                var result = compilation.Evaluate(variables);
                 
-                var binder = new Binder();
-                var boundExpression = binder.BindExpression(syntaxTree.Root);
-                IReadOnlyList<string> diagnostics = syntaxTree.Diagnostics.Concat(binder.Diagnostics).ToArray();
+                var diagnostics = result.Diagnostics;
 
 
                 if (showTree)
@@ -47,19 +47,36 @@ namespace PacLang
                 }
 
                 
-
                 if (!diagnostics.Any())
-                {
-                    var e = new Evaluator(boundExpression);
-                    var result = e.Evaluate();
-                    Console.WriteLine(result);
+                {                    
+                    Console.WriteLine(result.Value);
                 }
                 else
                 {                    
                     Console.ForegroundColor = ConsoleColor.DarkRed;
 
-                    foreach (var item in diagnostics)
-                        Console.WriteLine(item);
+                    foreach (var diagnostic in diagnostics)
+                    {
+                        Console.WriteLine();
+
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine(diagnostic);
+                        Console.ResetColor();
+
+                        var prefix = line.Substring(0, diagnostic.Span.Start);
+                        var error = line.Substring(diagnostic.Span.Start, diagnostic.Span.Length);
+                        var suffix = line.Substring(diagnostic.Span.End);
+
+                        Console.Write("    ");
+                        Console.Write(prefix);
+
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.Write(error);
+                        Console.ResetColor();
+
+                        Console.Write(suffix);
+                        Console.WriteLine();
+                    }
 
                     Console.ResetColor();
                 }

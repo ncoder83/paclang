@@ -1,20 +1,22 @@
 ﻿using System;
-using System.Linq.Expressions;
+using System.Collections.Generic;
 using PacLang.Binding;
-using PacLang.CodeAnalysis.Syntax;
 
 namespace PacLang
 {
-    internal sealed class Evaluator 
+
+    internal sealed class Evaluator
     {
         private readonly BoundExpression _root;
+        private readonly Dictionary<VariableSymbol, object> _variables;
 
-        public Evaluator(BoundExpression root)
+        public Evaluator(BoundExpression root, Dictionary<VariableSymbol, object> variables)
         {
             _root = root;
+            _variables = variables;
         }
 
-        public object Evaluate() 
+        public object Evaluate()
         {
             return EvaluateExpression(_root);
         }
@@ -22,11 +24,22 @@ namespace PacLang
 
         private object EvaluateExpression(BoundExpression node)
         {
-            if(node is BoundLiteralExpression n)
+            if (node is BoundLiteralExpression n)
                 return n.Value;
 
 
-            if(node is BoundUnaryExpression u)
+            if (node is BoundVariableExpression v)
+                return _variables[v.Variable];
+
+
+            if(node is BoundAssigmentExpression a)
+            {
+                var value = EvaluateExpression(a.Expression);
+                _variables[a.Variable] = value;
+                return value;
+            }
+
+            if (node is BoundUnaryExpression u)
             {
                 var operand = EvaluateExpression(u.Operand);
 
@@ -40,7 +53,7 @@ namespace PacLang
                 };
             }
 
-            if (node is BoundBinaryExpression b) 
+            if (node is BoundBinaryExpression b)
             {
                 var left = EvaluateExpression(b.Left);
                 var right = EvaluateExpression(b.Right);
@@ -58,7 +71,7 @@ namespace PacLang
                     _ => throw new Exception($"Unexpected binary behavior {b.Op}"),
                 };
             }
-         
+
             throw new Exception($"Unexpected node {node.Kind}");
         }
     }
