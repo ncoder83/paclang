@@ -32,7 +32,7 @@ namespace PacLang
 
                 var syntaxTree = SyntaxTree.Parse(line);
                 var compilation = new Compilation(syntaxTree);
-                var result = compilation.Evaluate();
+                var result = compilation.Evaluate(null);
                 
                 var diagnostics = result.Diagnostics;
 
