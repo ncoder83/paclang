@@ -10,9 +10,8 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
     {
         [Theory]
         [MemberData(nameof(GetSyntaxKindData))]
-        public void SyntaxFact_GetText_RondTrips(SyntaxKind kind)
+        public void SyntaxFact_GetText_RoundTrips(SyntaxKind kind)
         {
-
             var text = SyntaxFacts.GetText(kind);
 
             if (text == null)
@@ -21,11 +20,10 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
             var tokens = SyntaxTree.ParseTokens(text);
             var token = Assert.Single(tokens);
 
-
             Assert.Equal(kind, token.Kind);
             Assert.Equal(text, token.Text);
-
         }
+
 
         public static IEnumerable<object[]> GetSyntaxKindData()
         {
