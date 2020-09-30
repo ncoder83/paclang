@@ -7,6 +7,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "PacRunner", "PacRunner\PacR
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Pac", "Pac\Pac\Pac.csproj", "{7ADB9427-C1B3-4D33-866A-88DC50DBB7D7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PacLang.Tests", "PacLang.Tests\PacLang.Tests.csproj", "{798713DA-A849-4232-9124-483038CDD559}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{7ADB9427-C1B3-4D33-866A-88DC50DBB7D7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7ADB9427-C1B3-4D33-866A-88DC50DBB7D7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7ADB9427-C1B3-4D33-866A-88DC50DBB7D7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{798713DA-A849-4232-9124-483038CDD559}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{798713DA-A849-4232-9124-483038CDD559}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{798713DA-A849-4232-9124-483038CDD559}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{798713DA-A849-4232-9124-483038CDD559}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

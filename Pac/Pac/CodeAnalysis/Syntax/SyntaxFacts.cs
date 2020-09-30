@@ -1,34 +1,15 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace PacLang.CodeAnalysis.Syntax
 {
-    internal static class SyntaxFacts
+    public static class SyntaxFacts
     {
-        /*
-           example
-            -1 * 3
-
-           tree structure (one way)
-                
-                    -
-                    |
-                    *
-                   / \
-                  1   3
-                      
-            tree structure (another way)                    
-                    
-                    *
-                   / \
-                  -   3
-                  |
-                  1
-         
-         */
         public static int GetUnaryOperatorPrecedence(this SyntaxKind kind)
         {
             switch (kind)
-            {                
+            {
                 case SyntaxKind.PlusToken:
                 case SyntaxKind.MinusToken:
                 case SyntaxKind.BangToken:
@@ -64,14 +45,54 @@ namespace PacLang.CodeAnalysis.Syntax
             }
         }
 
-        internal static SyntaxKind GetKeywordKind(string text)
+        internal static SyntaxKind GetKeywordKind(string text) => text switch
         {
-            return text switch
+            "true" => SyntaxKind.TrueKeyword,
+            "false" => SyntaxKind.FalseKeyword,
+            _ => SyntaxKind.IdentifierToken,
+        };
+
+
+        public static IEnumerable<SyntaxKind> GetUnaryOperatorKinds()
+        {
+            var kinds = (SyntaxKind[])Enum.GetValues(typeof(SyntaxKind));
+
+            foreach (var kind in kinds)
             {
-                "true" => SyntaxKind.TrueKeyword,
-                "false" => SyntaxKind.FalseKeyword,
-                _ => SyntaxKind.IdentifierToken
-            };            
+                if (GetUnaryOperatorPrecedence(kind) > 0)
+                    yield return kind;
+            }
         }
+
+        public static IEnumerable<SyntaxKind> GetBinaryOperatorKinds()
+        {
+            var kinds = (SyntaxKind[])Enum.GetValues(typeof(SyntaxKind));
+
+            foreach (var kind in kinds)
+            {
+                if (GetBinaryOperatorPrecedence(kind) > 0)
+                    yield return kind;
+            }
+        }
+
+
+        public static string GetText(SyntaxKind kind) => kind switch
+        {
+            SyntaxKind.PlusToken => "+",
+            SyntaxKind.MinusToken => "-",
+            SyntaxKind.StarToken => "*",
+            SyntaxKind.SlashToken => "/",
+            SyntaxKind.BangToken => "!",
+            SyntaxKind.EqualsToken => "=",
+            SyntaxKind.AmpersandAmpersandToken => "&&",
+            SyntaxKind.PipePipeToken => "||",
+            SyntaxKind.EqualsEqualsToken => "==",
+            SyntaxKind.BangEqualsToken => "!=",
+            SyntaxKind.OpenParenthesisToken => "(",
+            SyntaxKind.CloseParenthesisToken => ")",
+            SyntaxKind.FalseKeyword => "false",
+            SyntaxKind.TrueKeyword => "true",
+            _ => null,
+        };
     }
 }

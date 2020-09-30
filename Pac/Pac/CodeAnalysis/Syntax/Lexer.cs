@@ -35,7 +35,7 @@
       _position++;
     }
 
-    public SyntaxToken NextToken()
+    public SyntaxToken Lex()
     {
       // <numbers>
       // + - * /

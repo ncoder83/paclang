@@ -4,7 +4,9 @@ using PacLang.Binding;
 
 namespace PacLang
 {
-
+    /// <summary>
+    /// this class will evaluate your expression
+    /// </summary>
     internal sealed class Evaluator
     {
         private readonly BoundExpression _root;
