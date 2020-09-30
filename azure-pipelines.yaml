@@ -1,0 +1,12 @@
+pool:
+  vmImage: "Ubuntu 16.04"
+
+variables:
+  buildConfiguration: "Release"
+  tests: '.\PacLang.Tests\PacLang.Tests.csproj'
+
+steps:
+  - script: dotnet build --configuration $(buildConfiguration)
+    displayName: "dotnet build $(buildConfiguration)"
+  - script: dotnet test $(tests)
+    displayName: "dotnet test $(tests)"
