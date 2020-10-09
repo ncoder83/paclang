@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-
-namespace PacLang.CodeAnalysis.Syntax
+﻿namespace PacLang.CodeAnalysis.Syntax
 {
     public sealed class SyntaxToken : SyntaxNode
     {
@@ -18,14 +15,5 @@ namespace PacLang.CodeAnalysis.Syntax
         public string Text { get; }
         public object Value { get; }
         public TextSpan Span => new TextSpan(Position, Text.Length);
-
-
-        public override IEnumerable<SyntaxNode> GetChildren()
-        {
-            return Enumerable.Empty<SyntaxNode>();
-        }
     }
-
-    
-
 }

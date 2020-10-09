@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace PacLang.CodeAnalysis.Syntax
+﻿namespace PacLang.CodeAnalysis.Syntax
 {
-  public sealed class BinaryExpressionSyntax : ExpressionSyntax
+    public sealed class BinaryExpressionSyntax : ExpressionSyntax
   {
     public BinaryExpressionSyntax(ExpressionSyntax left, SyntaxToken operatorToken, ExpressionSyntax right)
     {
@@ -17,11 +15,5 @@ namespace PacLang.CodeAnalysis.Syntax
 
     public override SyntaxKind Kind => SyntaxKind.BinaryExpression;
 
-    public override IEnumerable<SyntaxNode> GetChildren()
-    {
-      yield return Left;
-      yield return OperatorToken;
-      yield return Right;
-    }
   }
 }

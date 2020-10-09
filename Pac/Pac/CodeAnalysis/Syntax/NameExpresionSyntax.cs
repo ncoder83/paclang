@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace PacLang.CodeAnalysis.Syntax
+﻿namespace PacLang.CodeAnalysis.Syntax
 {
-  public sealed class NameExpresionSyntax : ExpressionSyntax
+    public sealed class NameExpresionSyntax : ExpressionSyntax
   {
     public NameExpresionSyntax(SyntaxToken identifierToken)
     {
@@ -13,9 +11,5 @@ namespace PacLang.CodeAnalysis.Syntax
 
     public override SyntaxKind Kind => SyntaxKind.NameExpression;
 
-    public override IEnumerable<SyntaxNode> GetChildren()
-    {
-      yield return IdentifierToken;
-    }
   }
 }

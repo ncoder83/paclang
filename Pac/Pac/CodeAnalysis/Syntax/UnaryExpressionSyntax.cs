@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PacLang.CodeAnalysis.Syntax
+﻿namespace PacLang.CodeAnalysis.Syntax
 {
     public sealed class UnaryExpressionSyntax : ExpressionSyntax
     {
@@ -14,14 +12,5 @@ namespace PacLang.CodeAnalysis.Syntax
         public ExpressionSyntax Operand { get; }
 
         public override SyntaxKind Kind => SyntaxKind.UnaryExpression;
-
-        public override IEnumerable<SyntaxNode> GetChildren()
-        {            
-            yield return OperatorToken;
-            yield return Operand;
-        }
     }
-
-
-
 }
