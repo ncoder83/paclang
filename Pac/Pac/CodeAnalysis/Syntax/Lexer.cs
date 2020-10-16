@@ -48,7 +48,7 @@
             switch (Current)
             {
                 case '\0':
-                    _kind = SyntaxKind.EndOfFileToken;                
+                    _kind = SyntaxKind.EndOfFileToken;
                     break;
                 case '+':
                     _kind = SyntaxKind.PlusToken;
@@ -114,11 +114,22 @@
                         _kind = SyntaxKind.BangEqualsToken;
                     }
                     break;
-                case '0': case '1': case '2': case '3': case '4':
-                case '5': case '6': case '7': case '8': case '9':
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
                     ReadNumberToken();
                     break;
-                case ' ': case '\n': case '\t': case '\r':
+                case ' ':
+                case '\n':
+                case '\t':
+                case '\r':
                     ReadWhiteSpace();
                     break;
                 default:
@@ -129,7 +140,7 @@
                     else if (char.IsWhiteSpace(Current))
                     {
                         ReadWhiteSpace();
-                    }                    
+                    }
                     else
                     {
                         _diagnostics.ReportBadCharacter(_position, Current);
@@ -138,7 +149,7 @@
                     break;
             }
 
-            var length = _position - _start ;
+            var length = _position - _start;
             var text = SyntaxFacts.GetText(_kind);
 
             if (text == null)
@@ -149,7 +160,7 @@
 
         private void ReadWhiteSpace()
         {
-            while (char.IsWhiteSpace(Current))                
+            while (char.IsWhiteSpace(Current))
                 _position++;
 
             _kind = SyntaxKind.WhiteSpaceToken;
