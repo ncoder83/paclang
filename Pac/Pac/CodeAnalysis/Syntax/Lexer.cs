@@ -1,4 +1,6 @@
-﻿namespace PacLang.CodeAnalysis.Syntax
+﻿using PacLang.Text;
+
+namespace PacLang.CodeAnalysis.Syntax
 {
     /// <summary>
     /// Produce tokens, leaves in the tree

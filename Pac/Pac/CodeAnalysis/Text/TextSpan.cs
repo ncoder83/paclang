@@ -1,6 +1,6 @@
 ﻿using System.Reflection.Metadata.Ecma335;
 
-namespace PacLang
+namespace PacLang.Text
 {
     public struct TextSpan
     {
