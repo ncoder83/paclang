@@ -6,6 +6,8 @@ using Xunit;
 
 namespace PacLang.Tests.CodeAnalysis.Syntax
 {
+
+
     public class SyntaxFactTests
     {
         [Theory]
