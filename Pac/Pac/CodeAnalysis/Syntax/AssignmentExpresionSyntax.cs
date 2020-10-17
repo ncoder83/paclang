@@ -1,8 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace PacLang.CodeAnalysis.Syntax
+﻿namespace PacLang.CodeAnalysis.Syntax
 {
-  public sealed class AssignmentExpresionSyntax : ExpressionSyntax
+    public sealed class AssignmentExpresionSyntax : ExpressionSyntax
   {
     public AssignmentExpresionSyntax(SyntaxToken identifierToken, SyntaxToken equalsToken, ExpressionSyntax expression)
     {
@@ -17,11 +15,5 @@ namespace PacLang.CodeAnalysis.Syntax
 
     public override SyntaxKind Kind => SyntaxKind.AssigmentExpression;
 
-    public override IEnumerable<SyntaxNode> GetChildren()
-    {
-      yield return IdentifierToken;
-      yield return EqualsToken;
-      yield return Expression;
-    }
   }
 }

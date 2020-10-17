@@ -1,4 +1,5 @@
 ﻿using PacLang.CodeAnalysis.Syntax;
+using PacLang.Text;
 using System;
 using System.Collections;
 using System.Collections.Generic;

@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace PacLang.CodeAnalysis.Syntax
+﻿namespace PacLang.CodeAnalysis.Syntax
 {
     public sealed class ParenthesizedExpressionSyntax : ExpressionSyntax
     {
@@ -15,13 +13,6 @@ namespace PacLang.CodeAnalysis.Syntax
             OpenParenthesisToken = openParenthesisToken;
             Expression = expression;
             CloseParenthesisToken = closeParenthesisToken;
-        }
-
-        public override IEnumerable<SyntaxNode> GetChildren()
-        {
-            yield return OpenParenthesisToken;
-            yield return Expression;
-            yield return CloseParenthesisToken;
         }
     }
 }
