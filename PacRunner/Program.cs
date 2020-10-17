@@ -18,10 +18,13 @@ namespace PacLang
 
             while (true)
             {
+                Console.ForegroundColor = ConsoleColor.Green;
                 if (textBuilder.Length == 0)
-                    Console.Write("> ");
+                    Console.Write("» ");
                 else
-                    Console.Write("| ");
+                    Console.Write("· ");
+
+                Console.ResetColor();
 
                 var input = Console.ReadLine();
                 var isBlank = string.IsNullOrWhiteSpace(input);
@@ -65,8 +68,10 @@ namespace PacLang
                 }
                 
                 if (!result.Diagnostics.Any())
-                {                    
+                {
+                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
                     Console.WriteLine(result.Value);
+                    Console.ResetColor();
                 }
                 else
                 {
