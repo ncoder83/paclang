@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using PacLang.Text;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 
 namespace PacLang.CodeAnalysis.Syntax
@@ -14,9 +15,10 @@ namespace PacLang.CodeAnalysis.Syntax
     {
         private readonly DiagnosticBag _diagnostics = new DiagnosticBag();
         private readonly ImmutableArray<SyntaxToken> _tokens;
+        public SourceText _text;
 
         private int _position;
-        public Parser(string text)
+        public Parser(SourceText text)
         {
             var tokens = new List<SyntaxToken>();
 
@@ -32,9 +34,9 @@ namespace PacLang.CodeAnalysis.Syntax
 
             } while (token.Kind != SyntaxKind.EndOfFileToken);
 
-
+            _text = text;
             _tokens = tokens.ToImmutableArray();
-            _diagnostics.AddRange(lexer.Diagnostics);
+            _diagnostics.AddRange(lexer.Diagnostics);            
         }
 
 
@@ -48,6 +50,8 @@ namespace PacLang.CodeAnalysis.Syntax
         }
 
         private SyntaxToken Current => Peek(0);
+
+        
 
         private SyntaxToken NextToken()
         {
@@ -69,7 +73,7 @@ namespace PacLang.CodeAnalysis.Syntax
         {
             var expression = ParseExpression();
             var endOfFileToken = MatchToken(SyntaxKind.EndOfFileToken);
-            return new SyntaxTree(_diagnostics.ToImmutableArray(), expression, endOfFileToken);
+            return new SyntaxTree(_text, _diagnostics.ToImmutableArray(), expression, endOfFileToken);
         }
 
 
