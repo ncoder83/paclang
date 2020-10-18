@@ -61,5 +61,11 @@ namespace PacLang
             var message = $"Variable '{name}' is undefined";
             Report(span, message);
         }
+
+        internal void ReportVariableAlreadyDeclared(TextSpan span, string name)
+        {
+            var message = $"Variable '{name}' is already declared";
+            Report(span, message);
+        }
     }
 }

@@ -1,18 +1,31 @@
 using PacLang.CodeAnalysis.Syntax;
 using System;
 using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.Linq;
 
 namespace PacLang.Binding
 {
+
     internal sealed class Binder
     {
-        private readonly DiagnosticBag _diagnostics = new DiagnosticBag();
-        private readonly Dictionary<VariableSymbol, object> _variables;
+        private readonly DiagnosticBag _diagnostics = new DiagnosticBag();        
+        private BoundScope _scope;
 
-        public Binder(Dictionary<VariableSymbol, object> variables)
+        public Binder(BoundScope parent)
         {
-            _variables = variables;
+            _scope = new BoundScope(parent);
+        }
+
+
+        public static BoundGlobalScope BindGlobalScopre(CompilationUnitSyntax syntax)
+        {
+            var binder = new Binder(null);
+            var expression =binder.BindExpression(syntax.Expression);
+            var variables = binder._scope.GetDeclaredVariables();
+            var diagonitics = binder.Diagnostics.ToImmutableArray();
+
+            return new BoundGlobalScope(null, diagonitics, variables, expression);
         }
 
         public DiagnosticBag Diagnostics => _diagnostics;
@@ -46,15 +59,13 @@ namespace PacLang.Binding
         private BoundExpression BindNameExpression(NameExpresionSyntax syntax)
         {
             var name = syntax.IdentifierToken.Text;
-            var variable = _variables.Keys.FirstOrDefault(v => v.Name == name);
-
-            if (variable == null)
+            
+            if (_scope.TryLookup(name, out var variable))
             {
                 _diagnostics.ReportUndefinedName(syntax.IdentifierToken.Span, name);
                 return new BoundLiteralExpression(0);
             }
-
-           // var type = variable.GetType();            
+                    
             return new BoundVariableExpression(variable);
         }
 
@@ -63,17 +74,13 @@ namespace PacLang.Binding
         {
             var name = syntax.IdentifierToken.Text;
             var boundExpression = BindExpression(syntax.Expression);
-
-
-            //var defaultValue = boundExpression.Type == typeof(int) ? (object)0 : boundExpression.Type == typeof(bool) ? (object)false : null;
-
-            var existingVariable = _variables.Keys.FirstOrDefault(v => v.Name == name);
-            if (existingVariable != null)
-                _variables.Remove(existingVariable);
-
             var variable = new VariableSymbol(name, boundExpression.Type);
 
-            _variables[variable] = null;                
+            if (!_scope.TryDeclare(variable))
+            {
+                _diagnostics.ReportVariableAlreadyDeclared(syntax.IdentifierToken.Span, name);
+            }
+                                  
 
             return new BoundAssigmentExpression(variable, boundExpression);
         }
