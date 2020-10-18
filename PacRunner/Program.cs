@@ -69,7 +69,7 @@ namespace PacLang
                 
                 if (!result.Diagnostics.Any())
                 {
-                    Console.ForegroundColor = ConsoleColor.DarkMagenta;
+                    Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.WriteLine(result.Value);
                     Console.ResetColor();
                 }

@@ -21,9 +21,12 @@
         CloseParenthesisToken,
         IdentifierToken,
 
-        //Keywords
+        // Keywords
         FalseKeyword,
-        TrueKeyword,        
+        TrueKeyword,
+
+        // Nodes
+        CompilationUnit,
 
         // Expressions
         LiteralExpression,
@@ -31,7 +34,6 @@
         UnaryExpression,
         BinaryExpression,        
         ParenthesizeExpression,
-
-        AssigmentExpression,        
+        AssigmentExpression,
     }
 }
