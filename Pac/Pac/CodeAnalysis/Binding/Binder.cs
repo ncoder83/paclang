@@ -18,14 +18,42 @@ namespace PacLang.Binding
         }
 
 
-        public static BoundGlobalScope BindGlobalScopre(CompilationUnitSyntax syntax)
+        public static BoundGlobalScope BindGlobalScope(BoundGlobalScope previous, CompilationUnitSyntax syntax)
         {
-            var binder = new Binder(null);
-            var expression =binder.BindExpression(syntax.Expression);
+            var parentScope = CreateParentScopes(previous);
+            var binder = new Binder(parentScope);
+            var expression = binder.BindExpression(syntax.Expression);
             var variables = binder._scope.GetDeclaredVariables();
-            var diagonitics = binder.Diagnostics.ToImmutableArray();
+            var diagnostics = binder.Diagnostics.ToImmutableArray();
 
-            return new BoundGlobalScope(null, diagonitics, variables, expression);
+            return new BoundGlobalScope(previous, diagnostics, variables, expression);
+        }
+
+        private static BoundScope CreateParentScopes(BoundGlobalScope previous) 
+        {
+            var stack = new Stack<BoundGlobalScope>();
+
+            while (previous != null)
+            {
+                stack.Push(previous);
+                previous = previous.Previous;
+            }
+
+            BoundScope parent = null;
+
+            // submission 3-> submission 2 -> submission 1
+            while (stack.Count > 0)
+            {
+                previous = stack.Pop();
+                var scope = new BoundScope(parent);
+                foreach (var v in previous.Variables)                
+                    scope.TryDeclare(v);
+                
+                parent = scope;
+            }
+
+            return parent;
+            
         }
 
         public DiagnosticBag Diagnostics => _diagnostics;
@@ -60,7 +88,7 @@ namespace PacLang.Binding
         {
             var name = syntax.IdentifierToken.Text;
             
-            if (_scope.TryLookup(name, out var variable))
+            if (!_scope.TryLookup(name, out var variable))
             {
                 _diagnostics.ReportUndefinedName(syntax.IdentifierToken.Span, name);
                 return new BoundLiteralExpression(0);
@@ -81,7 +109,6 @@ namespace PacLang.Binding
                 _diagnostics.ReportVariableAlreadyDeclared(syntax.IdentifierToken.Span, name);
             }
                                   
-
             return new BoundAssigmentExpression(variable, boundExpression);
         }
 

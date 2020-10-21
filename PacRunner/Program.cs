@@ -15,6 +15,7 @@ namespace PacLang
             var showTree = false;
             var variables = new Dictionary<VariableSymbol, object>();
             var textBuilder = new StringBuilder();
+            Compilation previous = null;
 
             while (true)
             {
@@ -57,7 +58,12 @@ namespace PacLang
                 if (!isBlank && syntaxTree.Diagnostics.Any())                
                     continue;                
 
-                var compilation = new Compilation(syntaxTree);
+                var compilation = previous == null 
+                                    ? new Compilation(syntaxTree)
+                                    : previous.ContinueWith(syntaxTree);
+
+                previous = compilation;
+
                 var result = compilation.Evaluate(variables);
                                                
                 if (showTree)
@@ -72,6 +78,8 @@ namespace PacLang
                     Console.ForegroundColor = ConsoleColor.Magenta;
                     Console.WriteLine(result.Value);
                     Console.ResetColor();
+
+                   
                 }
                 else
                 {

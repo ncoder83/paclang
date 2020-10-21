@@ -6,7 +6,6 @@ namespace PacLang.Binding
     internal sealed class BoundScope 
     {
         private Dictionary<string, VariableSymbol> _variables = new Dictionary<string, VariableSymbol>();
-
         public BoundScope Parent { get; }
 
         public BoundScope(BoundScope parent)

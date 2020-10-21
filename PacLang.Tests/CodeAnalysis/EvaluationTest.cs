@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Xunit;
 
-namespace PacLang.Tests.CodeAnalysis.Syntax
+namespace PacLang.Tests.CodeAnalysis
 {
     public class EvaluationTest
     {
@@ -19,7 +19,7 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
         [InlineData("12 == 3", false)]
         [InlineData("3 == 3", true)]
         [InlineData("12 != 3", true)]
-        [InlineData("3 != 3",false)]
+        [InlineData("3 != 3", false)]
         [InlineData("false == false", true)]
         [InlineData("true == false", false)]
         [InlineData("false != false", false)]

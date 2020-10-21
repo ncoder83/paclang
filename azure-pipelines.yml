@@ -11,10 +11,16 @@ pool:
 
 variables:
   buildConfiguration: 'Release'
+  sln: './PacLang.sln'
   tests: './PacLang.Tests/PacLang.Tests.csproj'
 
 steps:
-- script: dotnet build --configuration $(buildConfiguration)
+- script: dotnet build --configuration $(buildConfiguration) $(sln)
   displayName: 'dotnet build $(buildConfiguration)'
-- script: dotnet test $(tests)
+- script: dotnet test $(tests) --logger "xunit;LogFileName=TestResult.xml"
   displayName: 'dotnet test'
+- task: PublishTestResult@2
+  displayName: 'publish test result to azure pipelines'
+  inputs:
+    testResultFormat: 'xUnit'
+    testResultsFiles: '**/TestResults.xml'

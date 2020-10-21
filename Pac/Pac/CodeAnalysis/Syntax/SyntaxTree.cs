@@ -6,7 +6,7 @@ namespace PacLang.CodeAnalysis.Syntax
 {
     public sealed class SyntaxTree
     {
-        public SyntaxTree(SourceText text)
+        private SyntaxTree(SourceText text)
         {
             var parser = new Parser(text);
             var root =  parser.ParseCompilationUnit();
@@ -24,8 +24,7 @@ namespace PacLang.CodeAnalysis.Syntax
         public static SyntaxTree Parse(string text)
         {
             var sourceText = SourceText.From(text);
-            return Parse(sourceText);
-            
+            return Parse(sourceText);            
         }
 
         public static SyntaxTree Parse(SourceText text)
