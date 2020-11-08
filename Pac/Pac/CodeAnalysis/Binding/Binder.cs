@@ -10,6 +10,7 @@ namespace PacLang.Binding
     internal sealed class Binder
     {
         private readonly DiagnosticBag _diagnostics = new DiagnosticBag();        
+
         private BoundScope _scope;
 
         public Binder(BoundScope parent)
@@ -25,6 +26,9 @@ namespace PacLang.Binding
             var expression = binder.BindExpression(syntax.Expression);
             var variables = binder._scope.GetDeclaredVariables();
             var diagnostics = binder.Diagnostics.ToImmutableArray();
+
+            if (previous != null)
+                diagnostics = diagnostics.InsertRange(0, previous.Diagnostics);
 
             return new BoundGlobalScope(previous, diagnostics, variables, expression);
         }
@@ -102,13 +106,19 @@ namespace PacLang.Binding
         {
             var name = syntax.IdentifierToken.Text;
             var boundExpression = BindExpression(syntax.Expression);
-            var variable = new VariableSymbol(name, boundExpression.Type);
 
-            if (!_scope.TryDeclare(variable))
+            if(!_scope.TryLookup(name, out var variable)) 
             {
-                _diagnostics.ReportVariableAlreadyDeclared(syntax.IdentifierToken.Span, name);
+                variable = new VariableSymbol(name, boundExpression.Type);
+                _scope.TryDeclare(variable);
             }
-                                  
+
+            if(boundExpression.Type != variable.Type)
+            {
+                _diagnostics.ReportCannotConvert(syntax.Expression.Span, boundExpression.Type, variable.Type);
+                return boundExpression;
+            }
+                        
             return new BoundAssigmentExpression(variable, boundExpression);
         }
 

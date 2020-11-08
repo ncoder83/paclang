@@ -15,7 +15,7 @@ namespace PacLang.CodeAnalysis.Syntax
     {
         private readonly DiagnosticBag _diagnostics = new DiagnosticBag();
         private readonly ImmutableArray<SyntaxToken> _tokens;
-        public SourceText _text;
+        private readonly SourceText _text;
 
         private int _position;
         public Parser(SourceText text)
@@ -29,8 +29,11 @@ namespace PacLang.CodeAnalysis.Syntax
             {
                 token = lexer.Lex();
 
-                if (token.Kind != SyntaxKind.WhiteSpaceToken && token.Kind != SyntaxKind.BadToken)
+                if (token.Kind != SyntaxKind.WhiteSpaceToken &&
+                    token.Kind != SyntaxKind.BadToken)
+                {
                     tokens.Add(token);
+                }
 
             } while (token.Kind != SyntaxKind.EndOfFileToken);
 
@@ -45,13 +48,13 @@ namespace PacLang.CodeAnalysis.Syntax
         {
             var index = _position + offset;
 
-            return (index >= _tokens.Length) ? _tokens[_tokens.Length - 1] : //_tokens[^1]
-                                              _tokens[index];
+            if (index >= _tokens.Length)
+                return _tokens[_tokens.Length - 1]; //_tokens[^1]
+                                             
+            return _tokens[index];
         }
 
         private SyntaxToken Current => Peek(0);
-
-        
 
         private SyntaxToken NextToken()
         {
