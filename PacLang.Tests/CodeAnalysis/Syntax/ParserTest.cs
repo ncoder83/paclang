@@ -19,7 +19,7 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
             var op2Text = SyntaxFacts.GetText(op2);
 
             var text = $"a {op1Text} b {op2Text} c";
-            var expression = SyntaxTree.Parse(text).Root;
+            var expression = ParseExpression(text);
 
             if (op1Precedence >= op2Precedence)
             {
@@ -84,7 +84,7 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
             var binaryText = SyntaxFacts.GetText(binaryKind);
 
             var text = $"{unaryText} a {binaryText} b";
-            var expression = SyntaxTree.Parse(text).Root;
+            var expression = ParseExpression(text);
 
             if (unaryPrecedence >= binaryPrecedence)
             {
@@ -100,14 +100,14 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
                 {
                     //e.AssertNode(SyntaxKind.CompilationUnit);
                     e.AssertNode(SyntaxKind.BinaryExpression);
-                        e.AssertNode(SyntaxKind.UnaryExpression);
-                            e.AssertToken(unaryKind, unaryText);
-                            e.AssertNode(SyntaxKind.NameExpression);
-                            e.AssertToken(SyntaxKind.IdentifierToken, "a");
+                    e.AssertNode(SyntaxKind.UnaryExpression);
+                    e.AssertToken(unaryKind, unaryText);
+                    e.AssertNode(SyntaxKind.NameExpression);
+                    e.AssertToken(SyntaxKind.IdentifierToken, "a");
 
-                        e.AssertToken(binaryKind, binaryText);
-                        e.AssertNode(SyntaxKind.NameExpression);
-                        e.AssertToken(SyntaxKind.IdentifierToken, "b");
+                    e.AssertToken(binaryKind, binaryText);
+                    e.AssertNode(SyntaxKind.NameExpression);
+                    e.AssertToken(SyntaxKind.IdentifierToken, "b");
 
                 }
             }
@@ -130,9 +130,16 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
                     e.AssertToken(SyntaxKind.IdentifierToken, "a");
                     e.AssertToken(binaryKind, binaryText);
                     e.AssertNode(SyntaxKind.NameExpression);
-                    e.AssertToken(SyntaxKind.IdentifierToken, "b");                                        
+                    e.AssertToken(SyntaxKind.IdentifierToken, "b");
                 }
             }
+        }
+
+        private static ExpressionSyntax ParseExpression(string text)
+        {
+            var syntaxTree = SyntaxTree.Parse(text);
+            var root = syntaxTree.Root;
+            return root.Expression;
         }
 
         public static IEnumerable<object[]> GetBinaryOperatorPairsData()
