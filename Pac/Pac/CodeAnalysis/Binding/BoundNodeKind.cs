@@ -4,6 +4,7 @@ namespace PacLang.Binding
     {
         // Statements
         BlockStatement,
+        VariableDeclaration,
         ExpressionStatement,
 
         // Expressions
@@ -11,6 +12,9 @@ namespace PacLang.Binding
         VariableExpression,
         AssigmentExpression,
         UnaryExpression,
-        BinaryExpression,        
+        BinaryExpression,
+
+        // Declaration
+        
     }
 }

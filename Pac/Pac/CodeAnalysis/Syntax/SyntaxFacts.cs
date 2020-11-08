@@ -49,6 +49,8 @@ namespace PacLang.CodeAnalysis.Syntax
         {
             "true" => SyntaxKind.TrueKeyword,
             "false" => SyntaxKind.FalseKeyword,
+            "let" => SyntaxKind.LetKeyword,
+            "var" => SyntaxKind.VarKeyword,
             _ => SyntaxKind.IdentifierToken,
         };
 
@@ -94,6 +96,8 @@ namespace PacLang.CodeAnalysis.Syntax
             SyntaxKind.CloseBraceToken => "}",
             SyntaxKind.FalseKeyword => "false",
             SyntaxKind.TrueKeyword => "true",
+            SyntaxKind.LetKeyword => "let",
+            SyntaxKind.VarKeyword => "var",
             _ => null,
         };
     }

@@ -26,6 +26,8 @@
         // Keywords
         FalseKeyword,
         TrueKeyword,
+        VarKeyword,
+        LetKeyword,
 
         // Nodes
         CompilationUnit,
@@ -40,6 +42,7 @@
         UnaryExpression,
         BinaryExpression,        
         ParenthesizeExpression,
-        AssigmentExpression,        
+        AssigmentExpression,
+        VariableDeclaration,
     }
 }
