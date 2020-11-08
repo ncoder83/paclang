@@ -9,10 +9,11 @@ namespace PacLang
     /// </summary>
     internal sealed class Evaluator
     {
-        private readonly BoundExpression _root;
+        private readonly BoundStatement _root;
         private readonly Dictionary<VariableSymbol, object> _variables;
+        private object _lastValue;
 
-        public Evaluator(BoundExpression root, Dictionary<VariableSymbol, object> variables)
+        public Evaluator(BoundStatement root, Dictionary<VariableSymbol, object> variables)
         {
             _root = root;
             _variables = variables;
@@ -20,21 +21,63 @@ namespace PacLang
 
         public object Evaluate()
         {
-            return EvaluateExpression(_root);
+            EvaluateStatement(_root);
+            return _lastValue;
         }
 
-        private object EvaluateExpression(BoundExpression node)
+        private void EvaluateStatement(BoundStatement node)
         {
-            return node.Kind switch
+            switch (node.Kind)
             {
-                BoundNodeKind.LiteralExpression => EvaluateLiteralExpression((BoundLiteralExpression)node),
-                BoundNodeKind.VariableExpression => EvaluateVariableExpression((BoundVariableExpression)node),
-                BoundNodeKind.AssigmentExpression => EvaluateAssigmentExpression((BoundAssigmentExpression)node),
-                BoundNodeKind.UnaryExpression => EvaluateUnaryExpression((BoundUnaryExpression)node),
-                BoundNodeKind.BinaryExpression => EvaluateBinaryExpression((BoundBinaryExpression)node),
-                _ => throw new Exception($"Unexpected node {node.Kind}"),
+                case BoundNodeKind.BlockStatement:
+                    EvaluateBlockStatement((BoundBlockStatement)node);
+                    break;
+                case BoundNodeKind.VariableDeclaration:
+                    EvaluateVariableDeclaration((BoundVariableDeclaration)node);
+                    break;
+                case BoundNodeKind.ExpressionStatement:
+                    EvaluateExpressionStatement((BoundExpressionStatement)node);
+                    break;
+                default:
+                    throw new Exception($"Unexpected node {node.Kind}");
             };
         }
+
+        private void EvaluateVariableDeclaration(BoundVariableDeclaration node)
+        {
+            var value = EvaluateExpression(node.Initializer);
+            _variables[node.Variable] = value;
+            _lastValue = value;
+        }
+
+        private void EvaluateBlockStatement(BoundBlockStatement node)
+        {
+            foreach (var statement in node.Statements)
+                EvaluateStatement(statement);
+
+        }
+
+        private void EvaluateExpressionStatement(BoundExpressionStatement statement)
+        {
+            _lastValue = EvaluateExpression(statement.Expression);
+        }
+
+
+
+        private object EvaluateExpression(BoundExpression expression)
+        {
+            return expression.Kind switch
+            {
+                BoundNodeKind.LiteralExpression => EvaluateLiteralExpression((BoundLiteralExpression)expression),
+                BoundNodeKind.VariableExpression => EvaluateVariableExpression((BoundVariableExpression)expression),
+                BoundNodeKind.AssigmentExpression => EvaluateAssigmentExpression((BoundAssigmentExpression)expression),
+                BoundNodeKind.UnaryExpression => EvaluateUnaryExpression((BoundUnaryExpression)expression),
+                BoundNodeKind.BinaryExpression => EvaluateBinaryExpression((BoundBinaryExpression)expression),
+                _ => throw new Exception($"Unexpected node {expression.Kind}"),
+            };
+        }
+
+
         private object EvaluateLiteralExpression(BoundLiteralExpression n)
         {
             return n.Value;

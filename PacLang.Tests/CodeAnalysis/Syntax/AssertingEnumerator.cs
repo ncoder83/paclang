@@ -48,7 +48,7 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
         public void AssertNode(SyntaxKind kind)
         {
             try
-            {
+            {                
                 Assert.True(_enumerator.MoveNext());
                 Assert.Equal(kind, _enumerator.Current.Kind);
                 Assert.IsNotType<SyntaxToken>(_enumerator.Current);                

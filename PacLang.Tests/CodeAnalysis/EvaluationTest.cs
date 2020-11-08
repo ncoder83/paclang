@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Xunit;
 
-namespace PacLang.Tests.CodeAnalysis.Syntax
+namespace PacLang.Tests.CodeAnalysis
 {
     public class EvaluationTest
     {
@@ -19,7 +19,7 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
         [InlineData("12 == 3", false)]
         [InlineData("3 == 3", true)]
         [InlineData("12 != 3", true)]
-        [InlineData("3 != 3",false)]
+        [InlineData("3 != 3", false)]
         [InlineData("false == false", true)]
         [InlineData("true == false", false)]
         [InlineData("false != false", false)]
@@ -28,7 +28,7 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
         [InlineData("false", false)]
         [InlineData("!true", false)]
         [InlineData("!false", true)]
-        [InlineData("(a = 10) * a", 100)]
+        [InlineData("{ var a = 0 (a = 10) * a }", 100)]
         public void SyntaxFact_GetText_RoundTrips(string text, object expectedValue) 
         {
             //Arrange

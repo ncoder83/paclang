@@ -19,11 +19,22 @@
         BangEqualsToken,
         OpenParenthesisToken,
         CloseParenthesisToken,
+        CloseBraceToken,
+        OpenBraceToken,
         IdentifierToken,
 
-        //Keywords
+        // Keywords
         FalseKeyword,
-        TrueKeyword,        
+        TrueKeyword,
+        VarKeyword,
+        LetKeyword,
+
+        // Nodes
+        CompilationUnit,
+
+        // Statements
+        BlockStatement,
+        ExpressionStatement,
 
         // Expressions
         LiteralExpression,
@@ -31,7 +42,7 @@
         UnaryExpression,
         BinaryExpression,        
         ParenthesizeExpression,
-
-        AssigmentExpression,        
+        AssigmentExpression,
+        VariableDeclaration,
     }
 }
