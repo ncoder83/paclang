@@ -3,11 +3,8 @@
 # Add steps that run tests, create a NuGet package, deploy, and more:
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
-trigger:
-- master
-
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: 'Ubuntu 16.04'
 
 variables:
   buildConfiguration: 'Release'
@@ -22,5 +19,5 @@ steps:
 - task: PublishTestResult@2
   displayName: 'publish test result to azure pipelines'
   inputs:
-    testResultFormat: 'xUnit'
+    testResultsFormat: 'xUnit'
     testResultsFiles: '**/TestResults.xml'

@@ -33,7 +33,6 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
 
                 using (var e = new AssertingEnumerator(expression))
                 {
-                    //e.AssertNode(SyntaxKind.CompilationUnit);
                     e.AssertNode(SyntaxKind.BinaryExpression);
                     e.AssertNode(SyntaxKind.BinaryExpression);
                     e.AssertNode(SyntaxKind.NameExpression);
@@ -57,7 +56,6 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
                  */
                 using (var e = new AssertingEnumerator(expression))
                 {
-                    //e.AssertNode(SyntaxKind.CompilationUnit);
                     e.AssertNode(SyntaxKind.BinaryExpression);
                     e.AssertNode(SyntaxKind.NameExpression);
                     e.AssertToken(SyntaxKind.IdentifierToken, "a");
@@ -97,8 +95,7 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
                  */
 
                 using (var e = new AssertingEnumerator(expression))
-                {
-                    //e.AssertNode(SyntaxKind.CompilationUnit);
+                {                    
                     e.AssertNode(SyntaxKind.BinaryExpression);
                     e.AssertNode(SyntaxKind.UnaryExpression);
                     e.AssertToken(unaryKind, unaryText);
@@ -122,7 +119,6 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
                 */
                 using (var e = new AssertingEnumerator(expression))
                 {
-                    //e.AssertNode(SyntaxKind.CompilationUnit);
                     e.AssertNode(SyntaxKind.UnaryExpression);
                     e.AssertToken(unaryKind, unaryText);
                     e.AssertNode(SyntaxKind.BinaryExpression);
