@@ -135,7 +135,8 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
         {
             var syntaxTree = SyntaxTree.Parse(text);
             var root = syntaxTree.Root;
-            return root.Expression;
+            var statement = root.Statement;
+            return Assert.IsType<ExpressionStatementSyntax>(statement).Expression;
         }
 
         public static IEnumerable<object[]> GetBinaryOperatorPairsData()

@@ -90,6 +90,8 @@ namespace PacLang.CodeAnalysis.Syntax
             SyntaxKind.BangEqualsToken => "!=",
             SyntaxKind.OpenParenthesisToken => "(",
             SyntaxKind.CloseParenthesisToken => ")",
+            SyntaxKind.OpenBraceToken => "{",
+            SyntaxKind.CloseBraceToken => "}",
             SyntaxKind.FalseKeyword => "false",
             SyntaxKind.TrueKeyword => "true",
             _ => null,

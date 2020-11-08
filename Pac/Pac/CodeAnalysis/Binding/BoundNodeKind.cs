@@ -1,11 +1,16 @@
 namespace PacLang.Binding
 {
-  internal enum BoundNodeKind
-  {
-    LiteralExpression,
-    VariableExpression,
-    AssigmentExpression,
-    UnaryExpression,
-    BinaryExpression,
-  }
+    internal enum BoundNodeKind
+    {
+        // Statements
+        BlockStatement,
+        ExpressionStatement,
+
+        // Expressions
+        LiteralExpression,
+        VariableExpression,
+        AssigmentExpression,
+        UnaryExpression,
+        BinaryExpression,        
+    }
 }

@@ -1,4 +1,5 @@
-﻿using PacLang.Text;
+﻿using Pac.CodeAnalysis.Syntax;
+using PacLang.Text;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 
@@ -74,11 +75,41 @@ namespace PacLang.CodeAnalysis.Syntax
 
         public CompilationUnitSyntax ParseCompilationUnit()
         {
-            var expression = ParseExpression();
+            var statement = ParseStatement();
             var endOfFileToken = MatchToken(SyntaxKind.EndOfFileToken);
-            return new CompilationUnitSyntax(expression, endOfFileToken);
+            return new CompilationUnitSyntax(statement, endOfFileToken);
         }
 
+        private StatementSyntax ParseStatement()
+        {
+            if (Current.Kind == SyntaxKind.OpenBraceToken)
+                return ParseBlockStatement();
+
+            return ParseExpressionStatement();
+        }
+
+        private ExpressionStatementSyntax ParseExpressionStatement()
+        {
+            var expression = ParseExpression();
+            return new ExpressionStatementSyntax(expression);
+        }
+
+        private StatementSyntax ParseBlockStatement()
+        {
+            var statements = ImmutableArray.CreateBuilder<StatementSyntax>();
+
+            var openBraceToken = MatchToken(SyntaxKind.OpenBraceToken);
+
+            while(Current.Kind != SyntaxKind.EndOfFileToken && 
+                  Current.Kind != SyntaxKind.CloseBraceToken) 
+            {
+                var statement = ParseStatement();
+                statements.Add(statement);
+            }
+
+            var closeBraceToken = MatchToken(SyntaxKind.CloseBraceToken);
+            return new BlockStatementSyntax(openBraceToken, statements.ToImmutable(), closeBraceToken);
+        }
 
         private ExpressionSyntax ParseExpression()
         {

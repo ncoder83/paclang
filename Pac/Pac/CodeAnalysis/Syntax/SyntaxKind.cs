@@ -19,6 +19,8 @@
         BangEqualsToken,
         OpenParenthesisToken,
         CloseParenthesisToken,
+        CloseBraceToken,
+        OpenBraceToken,
         IdentifierToken,
 
         // Keywords
@@ -28,12 +30,16 @@
         // Nodes
         CompilationUnit,
 
+        // Statements
+        BlockStatement,
+        ExpressionStatement,
+
         // Expressions
         LiteralExpression,
         NameExpression,
         UnaryExpression,
         BinaryExpression,        
         ParenthesizeExpression,
-        AssigmentExpression,
+        AssigmentExpression,        
     }
 }
