@@ -32,21 +32,12 @@ namespace PacLang.Tests.CodeAnalysis
         [InlineData("!true", false)]
         [InlineData("!false", true)]
         [InlineData("{ var a = 0 (a = 10) * a }", 100)]
-        public void SyntaxFact_GetText_RoundTrips(string text, object expectedValue)
+        public void Evaluator_Computes_CorrectValues(string text, object expectedValue)
         {
-            //Arrange
-            var syntaxTree = SyntaxTree.Parse(text);
-            var compilation = new Compilation(syntaxTree);
-            var variables = new Dictionary<VariableSymbol, object>();
-
-            //Act
-            var result = compilation.Evaluate(variables);
-
-            //Assert
-            Assert.Empty(result.Diagnostics);
-            Assert.Equal(expectedValue, result.Value);
+            AssertValue(text, expectedValue);
         }
 
+       
         [Fact]
         public void Evaluator_VariableDeclaration_Reports_Redeclaration() 
         {
@@ -135,6 +126,22 @@ namespace PacLang.Tests.CodeAnalysis
 
             AssertDiagnostics(text, diagnostics);
         }
+
+        private static void AssertValue(string text, object expectedValue)
+        {
+            //Arrange
+            var syntaxTree = SyntaxTree.Parse(text);
+            var compilation = new Compilation(syntaxTree);
+            var variables = new Dictionary<VariableSymbol, object>();
+
+            //Act
+            var result = compilation.Evaluate(variables);
+
+            //Assert
+            Assert.Empty(result.Diagnostics);
+            Assert.Equal(expectedValue, result.Value);
+        }
+
 
         private void AssertDiagnostics(string text, string diagnosticText)
         {
