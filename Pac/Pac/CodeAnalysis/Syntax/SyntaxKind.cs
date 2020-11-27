@@ -17,11 +17,16 @@
         PipePipeToken,
         EqualsEqualsToken,
         BangEqualsToken,
+        LessToken,
+        LessOrEqualsToken,
+        GreaterToken,
+        GreaterOrEqualsToken,
         OpenParenthesisToken,
         CloseParenthesisToken,
         CloseBraceToken,
         OpenBraceToken,
         IdentifierToken,
+        
 
         // Keywords
         FalseKeyword,
@@ -44,5 +49,6 @@
         ParenthesizeExpression,
         AssigmentExpression,
         VariableDeclaration,
+        
     }
 }

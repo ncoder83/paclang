@@ -32,6 +32,10 @@ namespace PacLang.CodeAnalysis.Syntax
 
                 case SyntaxKind.EqualsEqualsToken:
                 case SyntaxKind.BangEqualsToken:
+                case SyntaxKind.LessToken:
+                case SyntaxKind.LessOrEqualsToken:
+                case SyntaxKind.GreaterToken:
+                case SyntaxKind.GreaterOrEqualsToken:
                     return 3;
 
                 case SyntaxKind.AmpersandAmpersandToken:
@@ -86,6 +90,10 @@ namespace PacLang.CodeAnalysis.Syntax
             SyntaxKind.SlashToken => "/",
             SyntaxKind.BangToken => "!",
             SyntaxKind.EqualsToken => "=",
+            SyntaxKind.LessToken => "<",
+            SyntaxKind.LessOrEqualsToken => "<=",
+            SyntaxKind.GreaterToken => ">",
+            SyntaxKind.GreaterOrEqualsToken => ">=",
             SyntaxKind.AmpersandAmpersandToken => "&&",
             SyntaxKind.PipePipeToken => "||",
             SyntaxKind.EqualsEqualsToken => "==",
