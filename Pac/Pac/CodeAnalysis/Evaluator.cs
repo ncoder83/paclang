@@ -35,6 +35,9 @@ namespace PacLang
                 case BoundNodeKind.VariableDeclaration:
                     EvaluateVariableDeclaration((BoundVariableDeclaration)node);
                     break;
+                case BoundNodeKind.IfStatement:
+                    EvaluateIfStatement((BoundIfStatement)node);
+                    break;
                 case BoundNodeKind.ExpressionStatement:
                     EvaluateExpressionStatement((BoundExpressionStatement)node);
                     break;
@@ -43,6 +46,14 @@ namespace PacLang
             };
         }
 
+
+        private void EvaluateBlockStatement(BoundBlockStatement node)
+        {
+            foreach (var statement in node.Statements)
+                EvaluateStatement(statement);
+
+        }        
+
         private void EvaluateVariableDeclaration(BoundVariableDeclaration node)
         {
             var value = EvaluateExpression(node.Initializer);
@@ -50,11 +61,14 @@ namespace PacLang
             _lastValue = value;
         }
 
-        private void EvaluateBlockStatement(BoundBlockStatement node)
+        private void EvaluateIfStatement(BoundIfStatement node)
         {
-            foreach (var statement in node.Statements)
-                EvaluateStatement(statement);
+            var condition = (bool)EvaluateExpression(node.Condition);
 
+            if (condition)
+                EvaluateStatement(node.ThenStatement);
+            else if (node.ElseStatement != null)
+                EvaluateStatement(node.ElseStatement);
         }
 
         private void EvaluateExpressionStatement(BoundExpressionStatement statement)

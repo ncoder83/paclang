@@ -68,11 +68,14 @@ namespace PacLang.Binding
             return syntax.Kind switch
             {
                 SyntaxKind.BlockStatement => BindBlockStatement((BlockStatementSyntax)syntax),
-                SyntaxKind.VariableDeclaration => BindVariableDeclaration((VariableDeclarationSyntax)syntax) ,
+                SyntaxKind.VariableDeclaration => BindVariableDeclaration((VariableDeclarationSyntax)syntax),
+                SyntaxKind.IfStatement => BindIfStatement((IfStatementSyntax)syntax),
                 SyntaxKind.ExpressionStatement => BindExpressionStatement((ExpressionStatementSyntax)syntax),
                 _ => throw new Exception($"Unexpected syntax {syntax.Kind}"),
             };
         }
+
+        
 
         private BoundStatement BindVariableDeclaration(VariableDeclarationSyntax syntax)
         {
@@ -89,12 +92,31 @@ namespace PacLang.Binding
             return new BoundVariableDeclaration(variable, initializer);
         }
 
+        private BoundStatement BindIfStatement(IfStatementSyntax syntax)
+        {
+            var condition = BindExpression(syntax.Condition, typeof(bool));
+            var thenStatement = BindStatement(syntax.ThenStatement);
+            var elseStatement = syntax.ElseClause == null ? null : BindStatement(syntax.ElseClause.ElseStatement);
+            return new BoundIfStatement(condition, thenStatement, elseStatement);
+        }
+       
         private BoundStatement BindExpressionStatement(ExpressionStatementSyntax syntax)
         {
             var expression = BindExpression(syntax.Expression);
 
             return new BoundExpressionStatement(expression);
         }
+
+        private BoundExpression BindExpression(ExpressionSyntax syntax, Type targeType)
+        {
+            var result = BindExpression(syntax);
+
+            if(result.Type != targeType)            
+                _diagnostics.ReportCannotConvert(syntax.Span, result.Type, targeType);
+
+            return result;
+        }
+
 
         private BoundStatement BindBlockStatement(BlockStatementSyntax syntax)
         {

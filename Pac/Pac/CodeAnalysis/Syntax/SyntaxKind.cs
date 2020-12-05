@@ -26,9 +26,11 @@
         CloseBraceToken,
         OpenBraceToken,
         IdentifierToken,
-        
+
 
         // Keywords
+        IfKeyword,
+        ElseKeyword,
         FalseKeyword,
         TrueKeyword,
         VarKeyword,
@@ -39,7 +41,10 @@
 
         // Statements
         BlockStatement,
+        VariableDeclaration,
+        IfStatement,
         ExpressionStatement,
+
 
         // Expressions
         LiteralExpression,
@@ -48,7 +53,7 @@
         BinaryExpression,        
         ParenthesizeExpression,
         AssigmentExpression,
-        VariableDeclaration,
+        ElseClause
         
     }
 }

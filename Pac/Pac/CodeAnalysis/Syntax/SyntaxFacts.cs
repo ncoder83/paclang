@@ -51,6 +51,8 @@ namespace PacLang.CodeAnalysis.Syntax
 
         internal static SyntaxKind GetKeywordKind(string text) => text switch
         {
+            "if" => SyntaxKind.IfKeyword,
+            "else" => SyntaxKind.ElseKeyword,
             "true" => SyntaxKind.TrueKeyword,
             "false" => SyntaxKind.FalseKeyword,
             "let" => SyntaxKind.LetKeyword,
@@ -102,6 +104,8 @@ namespace PacLang.CodeAnalysis.Syntax
             SyntaxKind.CloseParenthesisToken => ")",
             SyntaxKind.OpenBraceToken => "{",
             SyntaxKind.CloseBraceToken => "}",
+            SyntaxKind.IfKeyword => "if",
+            SyntaxKind.ElseKeyword => "else",
             SyntaxKind.FalseKeyword => "false",
             SyntaxKind.TrueKeyword => "true",
             SyntaxKind.LetKeyword => "let",

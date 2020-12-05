@@ -17,5 +17,4 @@
         public VariableSymbol Variable { get; }
         public BoundExpression Initializer { get; }
     }
-
 }
