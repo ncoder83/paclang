@@ -35,6 +35,8 @@
         VarKeyword,
         LetKeyword,
         WhileKeyword,
+        ForKeyword,
+        ToKeyword,
 
         // Nodes
         CompilationUnit,
@@ -45,7 +47,7 @@
         IfStatement,
         ExpressionStatement,
         WhileStatement,
-
+        ForStatement,
 
         // Expressions
         LiteralExpression,
@@ -54,6 +56,6 @@
         BinaryExpression,        
         ParenthesizeExpression,
         AssigmentExpression,
-        ElseClause,
+        ElseClause
     }
 }

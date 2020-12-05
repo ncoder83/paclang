@@ -71,9 +71,30 @@ namespace PacLang.Binding
                 SyntaxKind.VariableDeclaration => BindVariableDeclaration((VariableDeclarationSyntax)syntax),
                 SyntaxKind.IfStatement => BindIfStatement((IfStatementSyntax)syntax),
                 SyntaxKind.WhileStatement => BindWhileStatement((WhileStatementSyntax)syntax),
+                SyntaxKind.ForStatement => BindForStatement((ForStatementSyntax)syntax),
                 SyntaxKind.ExpressionStatement => BindExpressionStatement((ExpressionStatementSyntax)syntax),
                 _ => throw new Exception($"Unexpected syntax {syntax.Kind}"),
             };
+        }
+
+        private BoundStatement BindForStatement(ForStatementSyntax syntax)
+        {
+            var lowerBound = BindExpression(syntax.LowerBound, typeof(int));
+            var upperBound = BindExpression(syntax.UpperBound, typeof(int));
+
+            _scope = new BoundScope(_scope);
+
+            var name = syntax.Identifier.Text;
+            var variable = new VariableSymbol(name, true, typeof(int));
+
+            if (!_scope.TryDeclare(variable))
+                _diagnostics.ReportVariableAlreadyDeclared(syntax.Identifier.Span, name);
+
+            var body = BindStatement(syntax.Body);
+
+            _scope = _scope.Parent;
+
+            return new BoundForStatement(variable, lowerBound, upperBound, body);
         }
 
         private BoundStatement BindVariableDeclaration(VariableDeclarationSyntax syntax)
@@ -84,9 +105,8 @@ namespace PacLang.Binding
             var variable = new VariableSymbol(name, isReadOnly, initializer.Type);
 
             if (!_scope.TryDeclare(variable))
-            {
                 _diagnostics.ReportVariableAlreadyDeclared(syntax.Identifier.Span, name);
-            }
+            
 
             return new BoundVariableDeclaration(variable, initializer);
         }

@@ -53,6 +53,8 @@ namespace PacLang.CodeAnalysis.Syntax
         {
             "if" => SyntaxKind.IfKeyword,
             "else" => SyntaxKind.ElseKeyword,
+            "for" => SyntaxKind.ForKeyword,
+            "to" => SyntaxKind.ToKeyword,
             "true" => SyntaxKind.TrueKeyword,
             "false" => SyntaxKind.FalseKeyword,
             "let" => SyntaxKind.LetKeyword,
@@ -108,6 +110,8 @@ namespace PacLang.CodeAnalysis.Syntax
             SyntaxKind.IfKeyword => "if",
             SyntaxKind.ElseKeyword => "else",
             SyntaxKind.FalseKeyword => "false",
+            SyntaxKind.ForKeyword => "for",
+            SyntaxKind.ToKeyword => "to",
             SyntaxKind.TrueKeyword => "true",
             SyntaxKind.LetKeyword => "let",
             SyntaxKind.VarKeyword => "var",

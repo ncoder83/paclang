@@ -8,13 +8,13 @@ namespace PacLang.Binding
         IfStatement,
         ExpressionStatement,
         WhileStatement,
+        ForStatement,
 
         // Expressions
         LiteralExpression,
         VariableExpression,
         AssigmentExpression,
         UnaryExpression,
-        BinaryExpression
-        
+        BinaryExpression        
     }
 }
