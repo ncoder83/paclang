@@ -27,7 +27,6 @@
         OpenBraceToken,
         IdentifierToken,
 
-
         // Keywords
         IfKeyword,
         ElseKeyword,
@@ -35,6 +34,7 @@
         TrueKeyword,
         VarKeyword,
         LetKeyword,
+        WhileKeyword,
 
         // Nodes
         CompilationUnit,
@@ -44,6 +44,7 @@
         VariableDeclaration,
         IfStatement,
         ExpressionStatement,
+        WhileStatement,
 
 
         // Expressions
@@ -53,7 +54,6 @@
         BinaryExpression,        
         ParenthesizeExpression,
         AssigmentExpression,
-        ElseClause
-        
+        ElseClause,
     }
 }

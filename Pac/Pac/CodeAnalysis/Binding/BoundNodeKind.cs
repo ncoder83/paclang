@@ -7,12 +7,14 @@ namespace PacLang.Binding
         VariableDeclaration,
         IfStatement,
         ExpressionStatement,
+        WhileStatement,
 
         // Expressions
         LiteralExpression,
         VariableExpression,
         AssigmentExpression,
         UnaryExpression,
-        BinaryExpression        
+        BinaryExpression
+        
     }
 }

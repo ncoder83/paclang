@@ -57,6 +57,7 @@ namespace PacLang.CodeAnalysis.Syntax
             "false" => SyntaxKind.FalseKeyword,
             "let" => SyntaxKind.LetKeyword,
             "var" => SyntaxKind.VarKeyword,
+            "while" => SyntaxKind.WhileKeyword,
             _ => SyntaxKind.IdentifierToken,
         };
 
@@ -110,6 +111,7 @@ namespace PacLang.CodeAnalysis.Syntax
             SyntaxKind.TrueKeyword => "true",
             SyntaxKind.LetKeyword => "let",
             SyntaxKind.VarKeyword => "var",
+            SyntaxKind.WhileKeyword => "while",
             _ => null,
         };
     }
