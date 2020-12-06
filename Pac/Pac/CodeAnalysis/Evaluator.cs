@@ -35,12 +35,30 @@ namespace PacLang
                 case BoundNodeKind.VariableDeclaration:
                     EvaluateVariableDeclaration((BoundVariableDeclaration)node);
                     break;
+                case BoundNodeKind.IfStatement:
+                    EvaluateIfStatement((BoundIfStatement)node);
+                    break;
+                case BoundNodeKind.WhileStatement:
+                    EvaluateWhileStatement((BoundWhileStatement)node);
+                    break;
+                case BoundNodeKind.ForStatement:
+                    EvaluateForStatement((BoundForStatement)node);
+                    break;
                 case BoundNodeKind.ExpressionStatement:
                     EvaluateExpressionStatement((BoundExpressionStatement)node);
                     break;
                 default:
                     throw new Exception($"Unexpected node {node.Kind}");
             };
+        }
+
+
+
+        private void EvaluateBlockStatement(BoundBlockStatement node)
+        {
+            foreach (var statement in node.Statements)
+                EvaluateStatement(statement);
+
         }
 
         private void EvaluateVariableDeclaration(BoundVariableDeclaration node)
@@ -50,19 +68,38 @@ namespace PacLang
             _lastValue = value;
         }
 
-        private void EvaluateBlockStatement(BoundBlockStatement node)
+        private void EvaluateIfStatement(BoundIfStatement node)
         {
-            foreach (var statement in node.Statements)
-                EvaluateStatement(statement);
+            var condition = (bool)EvaluateExpression(node.Condition);
 
+            if (condition)
+                EvaluateStatement(node.ThenStatement);
+            else if (node.ElseStatement != null)
+                EvaluateStatement(node.ElseStatement);
+        }
+
+        private void EvaluateWhileStatement(BoundWhileStatement node)
+        {
+            while ((bool)EvaluateExpression(node.Condition))
+                EvaluateStatement(node.Body);
+        }
+
+        private void EvaluateForStatement(BoundForStatement node)
+        {
+            var lowerBound = (int)EvaluateExpression(node.LowerBound);
+            var upperBound = (int)EvaluateExpression(node.UpperBound);
+
+            for (var i = lowerBound; i <= upperBound; i++)
+            {
+                _variables[node.Variable] = i;
+                EvaluateStatement(node.Body);
+            }
         }
 
         private void EvaluateExpressionStatement(BoundExpressionStatement statement)
         {
             _lastValue = EvaluateExpression(statement.Expression);
         }
-
-
 
         private object EvaluateExpression(BoundExpression expression)
         {
@@ -122,6 +159,11 @@ namespace PacLang
                 BoundBinaryOperatorKind.LogicalOr => (bool)left || (bool)right,
                 BoundBinaryOperatorKind.Equals => Equals(left, right),
                 BoundBinaryOperatorKind.NotEquals => !Equals(left, right),
+
+                BoundBinaryOperatorKind.Less => (int)left < (int)right,
+                BoundBinaryOperatorKind.LessOrEquals => (int)left <= (int)right,
+                BoundBinaryOperatorKind.Greater => (int)left > (int)right,
+                BoundBinaryOperatorKind.GreaterOrEquals => (int)left >= (int)right,
                 _ => throw new Exception($"Unexpected binary behavior {b.Op}"),
             };
         }

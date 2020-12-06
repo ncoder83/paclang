@@ -32,6 +32,10 @@ namespace PacLang.CodeAnalysis.Syntax
 
                 case SyntaxKind.EqualsEqualsToken:
                 case SyntaxKind.BangEqualsToken:
+                case SyntaxKind.LessToken:
+                case SyntaxKind.LessOrEqualsToken:
+                case SyntaxKind.GreaterToken:
+                case SyntaxKind.GreaterOrEqualsToken:
                     return 3;
 
                 case SyntaxKind.AmpersandAmpersandToken:
@@ -47,10 +51,15 @@ namespace PacLang.CodeAnalysis.Syntax
 
         internal static SyntaxKind GetKeywordKind(string text) => text switch
         {
+            "if" => SyntaxKind.IfKeyword,
+            "else" => SyntaxKind.ElseKeyword,
+            "for" => SyntaxKind.ForKeyword,
+            "to" => SyntaxKind.ToKeyword,
             "true" => SyntaxKind.TrueKeyword,
             "false" => SyntaxKind.FalseKeyword,
             "let" => SyntaxKind.LetKeyword,
             "var" => SyntaxKind.VarKeyword,
+            "while" => SyntaxKind.WhileKeyword,
             _ => SyntaxKind.IdentifierToken,
         };
 
@@ -86,6 +95,10 @@ namespace PacLang.CodeAnalysis.Syntax
             SyntaxKind.SlashToken => "/",
             SyntaxKind.BangToken => "!",
             SyntaxKind.EqualsToken => "=",
+            SyntaxKind.LessToken => "<",
+            SyntaxKind.LessOrEqualsToken => "<=",
+            SyntaxKind.GreaterToken => ">",
+            SyntaxKind.GreaterOrEqualsToken => ">=",
             SyntaxKind.AmpersandAmpersandToken => "&&",
             SyntaxKind.PipePipeToken => "||",
             SyntaxKind.EqualsEqualsToken => "==",
@@ -94,10 +107,15 @@ namespace PacLang.CodeAnalysis.Syntax
             SyntaxKind.CloseParenthesisToken => ")",
             SyntaxKind.OpenBraceToken => "{",
             SyntaxKind.CloseBraceToken => "}",
+            SyntaxKind.IfKeyword => "if",
+            SyntaxKind.ElseKeyword => "else",
             SyntaxKind.FalseKeyword => "false",
+            SyntaxKind.ForKeyword => "for",
+            SyntaxKind.ToKeyword => "to",
             SyntaxKind.TrueKeyword => "true",
             SyntaxKind.LetKeyword => "let",
             SyntaxKind.VarKeyword => "var",
+            SyntaxKind.WhileKeyword => "while",
             _ => null,
         };
     }

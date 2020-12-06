@@ -4,7 +4,7 @@
 # https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 pool:
-  vmImage: 'Ubuntu 16.04'
+    vmImage: 'ubuntu-16.04'
 
 variables:
   buildConfiguration: 'Release'
@@ -16,8 +16,8 @@ steps:
   displayName: 'dotnet build $(buildConfiguration)'
 - script: dotnet test $(tests) --logger "xunit;LogFileName=TestResult.xml"
   displayName: 'dotnet test'
-- task: PublishTestResult@2
-  displayName: 'publish test result to azure pipelines'
+- task: PublishTestResults@2
+  displayName: 'publish test results to azure pipelines'
   inputs:
     testResultsFormat: 'xUnit'
     testResultsFiles: '**/TestResults.xml'

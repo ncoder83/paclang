@@ -17,6 +17,10 @@
         PipePipeToken,
         EqualsEqualsToken,
         BangEqualsToken,
+        LessToken,
+        LessOrEqualsToken,
+        GreaterToken,
+        GreaterOrEqualsToken,
         OpenParenthesisToken,
         CloseParenthesisToken,
         CloseBraceToken,
@@ -24,17 +28,26 @@
         IdentifierToken,
 
         // Keywords
+        IfKeyword,
+        ElseKeyword,
         FalseKeyword,
         TrueKeyword,
         VarKeyword,
         LetKeyword,
+        WhileKeyword,
+        ForKeyword,
+        ToKeyword,
 
         // Nodes
         CompilationUnit,
 
         // Statements
         BlockStatement,
+        VariableDeclaration,
+        IfStatement,
         ExpressionStatement,
+        WhileStatement,
+        ForStatement,
 
         // Expressions
         LiteralExpression,
@@ -43,6 +56,6 @@
         BinaryExpression,        
         ParenthesizeExpression,
         AssigmentExpression,
-        VariableDeclaration,
+        ElseClause
     }
 }

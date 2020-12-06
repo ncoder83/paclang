@@ -5,16 +5,16 @@ namespace PacLang.Binding
         // Statements
         BlockStatement,
         VariableDeclaration,
+        IfStatement,
         ExpressionStatement,
+        WhileStatement,
+        ForStatement,
 
         // Expressions
         LiteralExpression,
         VariableExpression,
         AssigmentExpression,
         UnaryExpression,
-        BinaryExpression,
-
-        // Declaration
-        
+        BinaryExpression        
     }
 }

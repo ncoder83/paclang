@@ -11,7 +11,7 @@ namespace PacLang.CodeAnalysis.Syntax
     {
         public abstract SyntaxKind Kind { get; }
 
-        public virtual TextSpan Span 
+        public virtual TextSpan Span
         {
             get
             {
@@ -29,19 +29,22 @@ namespace PacLang.CodeAnalysis.Syntax
             {
                 if (typeof(SyntaxNode).IsAssignableFrom(property.PropertyType))
                 {
-                    yield return (SyntaxNode)property.GetValue(this);
+                    var child = (SyntaxNode)property.GetValue(this);
+                    if (child != null)
+                        yield return child;
                 }
-                else if(typeof(IEnumerable<SyntaxNode>).IsAssignableFrom(property.PropertyType))
+                else if (typeof(IEnumerable<SyntaxNode>).IsAssignableFrom(property.PropertyType))
                 {
                     var children = (IEnumerable<SyntaxNode>)property.GetValue(this);
                     foreach (var child in children)
-                        yield return child;
+                        if (child != null)
+                            yield return child;
                 }
             }
         }
 
 
-        public void WriteTo(TextWriter writer) 
+        public void WriteTo(TextWriter writer)
         {
             PrettyPrint(writer, this);
         }
@@ -54,16 +57,16 @@ namespace PacLang.CodeAnalysis.Syntax
 
             writer.Write(indent);
 
-            if (isToConsole)            
-                Console.ForegroundColor = ConsoleColor.DarkGray;                
-            
+            if (isToConsole)
+                Console.ForegroundColor = ConsoleColor.DarkGray;
+
             writer.Write(marker);
 
-            if (isToConsole)            
+            if (isToConsole)
                 Console.ForegroundColor = node is SyntaxToken ? ConsoleColor.Blue : ConsoleColor.Cyan;
-            
+
             writer.Write(node.Kind);
-                
+
             if (node is SyntaxToken t && t.Value != null)
             {
                 writer.Write(" ");
