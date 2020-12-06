@@ -97,8 +97,6 @@ namespace PacLang.CodeAnalysis.Syntax
             }            
         }
 
-
-
         private StatementSyntax ParseIfStatement()
         {
             var keyword = MatchToken(SyntaxKind.IfKeyword);
@@ -163,12 +161,23 @@ namespace PacLang.CodeAnalysis.Syntax
             var statements = ImmutableArray.CreateBuilder<StatementSyntax>();
 
             var openBraceToken = MatchToken(SyntaxKind.OpenBraceToken);
-
             while(Current.Kind != SyntaxKind.EndOfFileToken && 
                   Current.Kind != SyntaxKind.CloseBraceToken) 
             {
+                var startToken = Current;
+
                 var statement = ParseStatement();
                 statements.Add(statement);
+
+                // if ParseStatement() did not consume any tokens,
+                // we need to skip the current token and continue. We
+                // do not need to report an error, because we will
+                // already tired to parse an expression statement
+                // and reporteed one
+                if(Current == startToken) 
+                {
+                    NextToken();   
+                }
             }
 
             var closeBraceToken = MatchToken(SyntaxKind.CloseBraceToken);

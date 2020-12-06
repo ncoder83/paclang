@@ -189,6 +189,13 @@ namespace PacLang.Binding
         private BoundExpression BindNameExpression(NameExpresionSyntax syntax)
         {
             var name = syntax.IdentifierToken.Text;
+
+            if (string.IsNullOrEmpty(name))
+            {
+                // This means the token was inserted by the parser. We already
+                // reported error se we can just return an error exp
+                return new BoundLiteralExpression(0);
+            }
             
             if (!_scope.TryLookup(name, out var variable))
             {

@@ -40,7 +40,7 @@ namespace PacLang
 
         public void ReportUnexpectedToken(TextSpan span, SyntaxKind actualKind, SyntaxKind expectedKind)
         {
-            var message = $"ERROR: Unexpected token <{actualKind}>, expected <{expectedKind}>";
+            var message = $"ERROR: Unexpected token <{actualKind}>, expected <{expectedKind}>.";
             Report(span, message);
         }
 

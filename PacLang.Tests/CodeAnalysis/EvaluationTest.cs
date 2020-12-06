@@ -75,6 +75,22 @@ namespace PacLang.Tests.CodeAnalysis
             AssertDiagnostics(text, diagnostics);
         }
 
+        [Fact]
+        public void Evaluator_BlockStatement_NoInfiniteLoop()
+        {
+            var text = @"
+                    {
+                    [)][]
+            ";
+
+            var diagnostics = @"
+                    ERROR: Unexpected token <CloseParenthesisToken>, expected <IdentifierToken>.
+                    ERROR: Unexpected token <EndOfFileToken>, expected <CloseBraceToken>.
+            ";
+
+            AssertDiagnostics(text, diagnostics);
+        }
+
 
         [Fact]
         public void Evaluator_IfStatement_Reports_CannotConvert()
@@ -109,7 +125,6 @@ namespace PacLang.Tests.CodeAnalysis
 
             AssertDiagnostics(text, diagnostics);
         }
-
 
         [Fact]
         public void Evaluator_ForStatement_Reports_CannotConvert_LowerBound()
@@ -165,6 +180,19 @@ namespace PacLang.Tests.CodeAnalysis
             var diagnostics = @"
                     Variable 'x' doesn't exist.
             ";
+
+            AssertDiagnostics(text, diagnostics);
+        }
+
+
+        [Fact]
+        public void Evaluator_NameExpression_Reports_NoErrorForInserterToken()
+        {
+            var text = @"[]";
+
+            var diagnostics = @"
+                    ERROR: Unexpected token <EndOfFileToken>, expected <IdentifierToken>.
+             ";
 
             AssertDiagnostics(text, diagnostics);
         }
