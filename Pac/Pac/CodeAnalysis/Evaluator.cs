@@ -140,6 +140,7 @@ namespace PacLang
                 BoundUnaryOperatorKind.Identity => (int)operand,
                 BoundUnaryOperatorKind.Negation => -(int)operand,
                 BoundUnaryOperatorKind.LogicalNegation => !(bool)operand,
+                BoundUnaryOperatorKind.OnesComplement => ~(int)operand,
                 _ => throw new Exception($"Unexpected unary behavior {u.Op}"),
             };
         }
@@ -149,23 +150,50 @@ namespace PacLang
             var left = EvaluateExpression(b.Left);
             var right = EvaluateExpression(b.Right);
 
-            return b.Op.Kind switch
+            switch (b.Op.Kind)
             {
-                BoundBinaryOperatorKind.Addition => (int)left + (int)right,
-                BoundBinaryOperatorKind.Subtraction => (int)left - (int)right,
-                BoundBinaryOperatorKind.Mulitplication => (int)left * (int)right,
-                BoundBinaryOperatorKind.Division => (int)left / (int)right,
-                BoundBinaryOperatorKind.LogicalAnd => (bool)left && (bool)right,
-                BoundBinaryOperatorKind.LogicalOr => (bool)left || (bool)right,
-                BoundBinaryOperatorKind.Equals => Equals(left, right),
-                BoundBinaryOperatorKind.NotEquals => !Equals(left, right),
-
-                BoundBinaryOperatorKind.Less => (int)left < (int)right,
-                BoundBinaryOperatorKind.LessOrEquals => (int)left <= (int)right,
-                BoundBinaryOperatorKind.Greater => (int)left > (int)right,
-                BoundBinaryOperatorKind.GreaterOrEquals => (int)left >= (int)right,
-                _ => throw new Exception($"Unexpected binary behavior {b.Op}"),
-            };
+                case BoundBinaryOperatorKind.Addition:
+                    return (int)left + (int)right;
+                case BoundBinaryOperatorKind.Subtraction:
+                    return (int)left - (int)right;
+                case BoundBinaryOperatorKind.Multiplication:
+                    return (int)left * (int)right;
+                case BoundBinaryOperatorKind.Division:
+                    return (int)left / (int)right;
+                case BoundBinaryOperatorKind.LogicalAnd:
+                    return (bool)left && (bool)right;
+                case BoundBinaryOperatorKind.LogicalOr:
+                    return (bool)left || (bool)right;
+                case BoundBinaryOperatorKind.BitwiseAnd:
+                    if (b.Type == typeof(int))
+                        return (int)left & (int)right;
+                    else
+                        return (bool)left & (bool)right;
+                case BoundBinaryOperatorKind.BitwiseOr:
+                    if (b.Type == typeof(int))
+                        return (int)left | (int)right;
+                    else
+                        return (bool)left | (bool)right;
+                case BoundBinaryOperatorKind.BitwiseXor:
+                    if (b.Type == typeof(int))
+                        return (int)left ^ (int)right;
+                    else
+                        return (bool)left ^ (bool)right;
+                case BoundBinaryOperatorKind.Equals:
+                    return Equals(left, right);
+                case BoundBinaryOperatorKind.NotEquals:
+                    return !Equals(left, right);
+                case BoundBinaryOperatorKind.Less:
+                    return (int)left < (int)right;
+                case BoundBinaryOperatorKind.LessOrEquals:
+                    return (int)left <= (int)right;
+                case BoundBinaryOperatorKind.Greater:
+                    return (int)left > (int)right;
+                case BoundBinaryOperatorKind.GreaterOrEquals:
+                    return (int)left >= (int)right;
+                default:
+                    throw new Exception($"Unexpected binary behavior {b.Op}");
+            }
         }
     }
 }

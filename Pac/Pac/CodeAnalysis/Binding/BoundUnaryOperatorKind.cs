@@ -4,7 +4,8 @@
     {
         LogicalNegation,
         Negation,
-        Identity
+        Identity,
+        OnesComplement
     }
 
 }
