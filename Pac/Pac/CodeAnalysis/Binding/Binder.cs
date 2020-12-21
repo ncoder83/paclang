@@ -226,7 +226,7 @@ namespace PacLang.Binding
                 return boundExpression;
             }
                         
-            return new BoundAssigmentExpression(variable, boundExpression);
+            return new BoundAssignmentExpression(variable, boundExpression);
         }
 
         private BoundExpression BindUnaryExpression(UnaryExpressionSyntax syntax)

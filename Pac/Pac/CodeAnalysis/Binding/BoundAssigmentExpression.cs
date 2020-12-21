@@ -2,11 +2,11 @@
 
 namespace PacLang.Binding
 {
-    internal sealed class BoundAssigmentExpression : BoundExpression
+    internal sealed class BoundAssignmentExpression : BoundExpression
     {
 
 
-        public BoundAssigmentExpression(VariableSymbol variable, BoundExpression expression)
+        public BoundAssignmentExpression(VariableSymbol variable, BoundExpression expression)
         {
             Variable = variable;
             Expression = expression;

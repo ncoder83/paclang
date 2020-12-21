@@ -41,9 +41,9 @@ namespace PacLang
                 case BoundNodeKind.WhileStatement:
                     EvaluateWhileStatement((BoundWhileStatement)node);
                     break;
-                case BoundNodeKind.ForStatement:
-                    EvaluateForStatement((BoundForStatement)node);
-                    break;
+                //case BoundNodeKind.ForStatement:
+                //    EvaluateForStatement((BoundForStatement)node);
+                //    break;
                 case BoundNodeKind.ExpressionStatement:
                     EvaluateExpressionStatement((BoundExpressionStatement)node);
                     break;
@@ -84,17 +84,17 @@ namespace PacLang
                 EvaluateStatement(node.Body);
         }
 
-        private void EvaluateForStatement(BoundForStatement node)
-        {
-            var lowerBound = (int)EvaluateExpression(node.LowerBound);
-            var upperBound = (int)EvaluateExpression(node.UpperBound);
+        //private void EvaluateForStatement(BoundForStatement node)
+        //{
+        //    var lowerBound = (int)EvaluateExpression(node.LowerBound);
+        //    var upperBound = (int)EvaluateExpression(node.UpperBound);
 
-            for (var i = lowerBound; i <= upperBound; i++)
-            {
-                _variables[node.Variable] = i;
-                EvaluateStatement(node.Body);
-            }
-        }
+        //    for (var i = lowerBound; i <= upperBound; i++)
+        //    {
+        //        _variables[node.Variable] = i;
+        //        EvaluateStatement(node.Body);
+        //    }
+        //}
 
         private void EvaluateExpressionStatement(BoundExpressionStatement statement)
         {
@@ -107,7 +107,7 @@ namespace PacLang
             {
                 BoundNodeKind.LiteralExpression => EvaluateLiteralExpression((BoundLiteralExpression)expression),
                 BoundNodeKind.VariableExpression => EvaluateVariableExpression((BoundVariableExpression)expression),
-                BoundNodeKind.AssigmentExpression => EvaluateAssigmentExpression((BoundAssigmentExpression)expression),
+                BoundNodeKind.AssigmentExpression => EvaluateAssigmentExpression((BoundAssignmentExpression)expression),
                 BoundNodeKind.UnaryExpression => EvaluateUnaryExpression((BoundUnaryExpression)expression),
                 BoundNodeKind.BinaryExpression => EvaluateBinaryExpression((BoundBinaryExpression)expression),
                 _ => throw new Exception($"Unexpected node {expression.Kind}"),
@@ -124,7 +124,7 @@ namespace PacLang
             return _variables[v.Variable];
         }
 
-        private object EvaluateAssigmentExpression(BoundAssigmentExpression a)
+        private object EvaluateAssigmentExpression(BoundAssignmentExpression a)
         {
             var value = EvaluateExpression(a.Expression);
             _variables[a.Variable] = value;
