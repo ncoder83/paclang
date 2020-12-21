@@ -9,12 +9,17 @@ namespace PacLang.Binding
         ExpressionStatement,
         WhileStatement,
         ForStatement,
+        GotoStatement,
+        ConditionalGotoStatement,
+        LabelStatement,
+
 
         // Expressions
         LiteralExpression,
         VariableExpression,
         AssigmentExpression,
         UnaryExpression,
-        BinaryExpression        
+        BinaryExpression,
+        
     }
 }
