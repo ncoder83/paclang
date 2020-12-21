@@ -13,6 +13,7 @@ namespace PacLang.CodeAnalysis.Syntax
                 case SyntaxKind.PlusToken:
                 case SyntaxKind.MinusToken:
                 case SyntaxKind.BangToken:
+                case SyntaxKind.TildeToken:
                     return 6;
                 default:
                     return 0;
@@ -38,10 +39,13 @@ namespace PacLang.CodeAnalysis.Syntax
                 case SyntaxKind.GreaterOrEqualsToken:
                     return 3;
 
+                case SyntaxKind.AmpersandToken:
                 case SyntaxKind.AmpersandAmpersandToken:
                     return 2;
 
+                case SyntaxKind.PipeToken:
                 case SyntaxKind.PipePipeToken:
+                case SyntaxKind.HatToken:
                     return 1;
 
                 default:
@@ -95,12 +99,16 @@ namespace PacLang.CodeAnalysis.Syntax
             SyntaxKind.SlashToken => "/",
             SyntaxKind.BangToken => "!",
             SyntaxKind.EqualsToken => "=",
+            SyntaxKind.TildeToken => "~",
             SyntaxKind.LessToken => "<",
             SyntaxKind.LessOrEqualsToken => "<=",
             SyntaxKind.GreaterToken => ">",
             SyntaxKind.GreaterOrEqualsToken => ">=",
             SyntaxKind.AmpersandAmpersandToken => "&&",
+            SyntaxKind.AmpersandToken => "&",
             SyntaxKind.PipePipeToken => "||",
+            SyntaxKind.PipeToken => "|",
+            SyntaxKind.HatToken => "^",
             SyntaxKind.EqualsEqualsToken => "==",
             SyntaxKind.BangEqualsToken => "!=",
             SyntaxKind.OpenParenthesisToken => "(",

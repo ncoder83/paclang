@@ -17,7 +17,7 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
                               .Cast<SyntaxKind>()
                               .Where(k => k.ToString().EndsWith("Keyword") ||
                                           k.ToString().EndsWith("Token"));
-                              
+
 
             var testedTokensKinds = GetTokens().Concat(GetSeparators()).Select(t => t.kind);
 
@@ -25,7 +25,7 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
             untestedTokenKinds.Remove(SyntaxKind.BadToken);
             untestedTokenKinds.Remove(SyntaxKind.EndOfFileToken);
             untestedTokenKinds.ExceptWith(testedTokensKinds);
-            
+
             Assert.Empty(untestedTokenKinds);
         }
 
@@ -55,17 +55,17 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
             var tokens = SyntaxTree.ParseTokens(text).ToArray();
 
             //Assert
-            Assert.Equal(2, tokens.Length);            
-            Assert.Equal(tokens[0].Kind, t1Kind);
-            Assert.Equal(tokens[0].Text, t1Text);
-            Assert.Equal(tokens[1].Kind, t2Kind);
-            Assert.Equal(tokens[1].Text, t2Text);
+            Assert.Equal(2, tokens.Length);
+            Assert.Equal(t1Kind, tokens[0].Kind);
+            Assert.Equal(t1Text, tokens[0].Text);
+            Assert.Equal(t2Kind, tokens[1].Kind);
+            Assert.Equal(t2Text, tokens[1].Text);
         }
 
 
         [Theory]
         [MemberData(nameof(GetTokenPairsWithSeparatorData))]
-        public void Lexer_Lexes_TokenPairsWithSeparator(SyntaxKind t1Kind, string t1Text, 
+        public void Lexer_Lexes_TokenPairsWithSeparator(SyntaxKind t1Kind, string t1Text,
                                             SyntaxKind separatorKind, string separatorText,
                                             SyntaxKind t2Kind, string t2Text)
         {
@@ -77,12 +77,13 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
 
             //Assert
             Assert.Equal(3, tokens.Length);
-            Assert.Equal(tokens[0].Kind, t1Kind);
-            Assert.Equal(tokens[0].Text, t1Text);
-            Assert.Equal(tokens[1].Kind, separatorKind);
-            Assert.Equal(tokens[1].Text, separatorText);
-            Assert.Equal(tokens[2].Kind, t2Kind);
-            Assert.Equal(tokens[2].Text, t2Text);
+            Assert.Equal(t1Kind, tokens[0].Kind);
+            Assert.Equal(t1Text, tokens[0].Text);
+            Assert.Equal(separatorKind, tokens[1].Kind);
+            Assert.Equal(separatorText, tokens[1].Text);
+            Assert.Equal(t2Kind, tokens[2].Kind);
+            Assert.Equal(t2Text, tokens[2].Text);
+
         }
 
 
@@ -96,13 +97,13 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
         public static IEnumerable<object[]> GetTokenPairsData()
         {
             foreach (var t in GetTokenPairs())
-                yield return new object[] { t.t1Kind, t.t1Text, t.t2Kind, t.t2Text};
+                yield return new object[] { t.t1Kind, t.t1Text, t.t2Kind, t.t2Text };
         }
 
         public static IEnumerable<object[]> GetTokenPairsWithSeparatorData()
         {
             foreach (var t in GetTokenPairsWithSeparator())
-                yield return new object[] { t.t1Kind, t.t1Text, t.separatorKind, t.separatorText,  t.t2Kind, t.t2Text };
+                yield return new object[] { t.t1Kind, t.t1Text, t.separatorKind, t.separatorText, t.t2Kind, t.t2Text };
         }
 
         private static IEnumerable<(SyntaxKind kind, string text)> GetTokens()
@@ -111,10 +112,10 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
             var fixedTokens = Enum.GetValues(typeof(SyntaxKind))
                                 .Cast<SyntaxKind>()
                                 .Select(k => (kind: k, text: SyntaxFacts.GetText(k)))
-                                .Where( t => t.text != null);
+                                .Where(t => t.text != null);
 
             var dynamicTokens = new[]
-            {                                     
+            {
                 (SyntaxKind.NumberToken, "1"),
                 (SyntaxKind.NumberToken, "123"),
                 (SyntaxKind.IdentifierToken, "a"),
@@ -136,7 +137,7 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
             };
         }
 
-        private static bool RequiresSeparator(SyntaxKind t1Kind, SyntaxKind t2Kind) 
+        private static bool RequiresSeparator(SyntaxKind t1Kind, SyntaxKind t2Kind)
         {
             var t1IsKeyword = t1Kind.ToString().EndsWith("Keyword");
             var t2IsKeyword = t2Kind.ToString().EndsWith("Keyword");
@@ -180,24 +181,34 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
             if (t1Kind == SyntaxKind.GreaterToken && t2Kind == SyntaxKind.EqualsEqualsToken)
                 return true;
 
-                //TODO: more cases 
+            if (t1Kind == SyntaxKind.AmpersandToken && t2Kind == SyntaxKind.AmpersandToken)
+                return true;
 
-                return false;
+            if (t1Kind == SyntaxKind.AmpersandToken && t2Kind == SyntaxKind.AmpersandAmpersandToken)
+                return true;
+
+            if (t1Kind == SyntaxKind.PipeToken && t2Kind == SyntaxKind.PipeToken)
+                return true;
+
+            if (t1Kind == SyntaxKind.PipeToken && t2Kind == SyntaxKind.PipePipeToken)
+                return true;
+
+            return false;
         }
 
-        private static IEnumerable<(SyntaxKind t1Kind, string t1Text, SyntaxKind t2Kind, string t2Text)> GetTokenPairs() 
+        private static IEnumerable<(SyntaxKind t1Kind, string t1Text, SyntaxKind t2Kind, string t2Text)> GetTokenPairs()
         {
             foreach (var t1 in GetTokens())
-            {                
+            {
                 foreach (var t2 in GetTokens())
                 {
-                    if(!RequiresSeparator(t1.kind, t2.kind))                    
+                    if (!RequiresSeparator(t1.kind, t2.kind))
                         yield return (t1.kind, t1.text, t2.kind, t2.text);
                 }
             }
         }
 
-        private static IEnumerable<(SyntaxKind t1Kind, string t1Text, 
+        private static IEnumerable<(SyntaxKind t1Kind, string t1Text,
                                     SyntaxKind separatorKind, string separatorText,
                                     SyntaxKind t2Kind, string t2Text)> GetTokenPairsWithSeparator()
         {
@@ -207,7 +218,7 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
                 {
                     if (RequiresSeparator(t1.kind, t2.kind))
                     {
-                        foreach(var s in GetSeparators())                      
+                        foreach (var s in GetSeparators())
                             yield return (t1.kind, t1.text, s.kind, s.text, t2.kind, t2.text);
                     }
                 }

@@ -13,6 +13,7 @@ namespace PacLang
         private static void Main()
         {
             var showTree = false;
+            var showProgram = false;
             var variables = new Dictionary<VariableSymbol, object>();
             var textBuilder = new StringBuilder();
             Compilation previous = null;
@@ -44,6 +45,12 @@ namespace PacLang
                         Console.WriteLine(showTree ? "Showing Parser trees." : "Not showing parse trees");
                         continue;
                     }
+                    else if (input == "#showProgram")
+                    {
+                        showProgram = !showProgram;
+                        Console.WriteLine(showProgram ? "Showing Bound tree." : "Not showing parse tree.");
+                        continue;
+                    }
                     else if (input == "#cls")
                     {
                         Console.Clear();
@@ -69,13 +76,15 @@ namespace PacLang
                                     ? new Compilation(syntaxTree)
                                     : previous.ContinueWith(syntaxTree);
 
-                var result = compilation.Evaluate(variables);
                                                
                 if (showTree)
-                {                    
                     syntaxTree.Root.WriteTo(Console.Out);
-                }
-                
+
+                if (showProgram)
+                    compilation.EmitTree(Console.Out);
+
+                var result = compilation.Evaluate(variables);
+
                 if (!result.Diagnostics.Any())
                 {
                     Console.ForegroundColor = ConsoleColor.Magenta;

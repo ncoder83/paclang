@@ -15,6 +15,10 @@
         EqualsToken,
         AmpersandAmpersandToken,
         PipePipeToken,
+        TildeToken,
+        AmpersandToken,
+        PipeToken,
+        HatToken,
         EqualsEqualsToken,
         BangEqualsToken,
         LessToken,
@@ -56,6 +60,7 @@
         BinaryExpression,        
         ParenthesizeExpression,
         AssigmentExpression,
-        ElseClause
+        ElseClause,
+        
     }
 }
