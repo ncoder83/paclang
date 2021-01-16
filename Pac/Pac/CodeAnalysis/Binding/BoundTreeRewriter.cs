@@ -57,7 +57,7 @@ namespace PacLang.Binding
             if (condition == node.Condition)
                 return node;
 
-            return new BoundConditionalGotoStatement(node.Label, condition, node.JumpIfFalse);
+            return new BoundConditionalGotoStatement(node.Label, condition, node.JumpIfTrue);
         }
 
         protected virtual BoundStatement RewriteGotoStatement(BoundGotoStatement node)
