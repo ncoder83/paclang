@@ -7,6 +7,7 @@
         EndOfFileToken,
         WhiteSpaceToken,
         NumberToken,
+        StringToken,
         PlusToken,
         MinusToken,
         StarToken,
@@ -60,7 +61,7 @@
         BinaryExpression,        
         ParenthesizeExpression,
         AssigmentExpression,
-        ElseClause,
+        ElseClause
         
     }
 }

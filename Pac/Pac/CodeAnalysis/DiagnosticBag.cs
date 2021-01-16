@@ -31,12 +31,19 @@ namespace PacLang
             Report(textSpan, message);
         }
 
-        internal void ReportBadCharacter(int position, char character)
+        public void ReportBadCharacter(int position, char character)
         {
             var span = new TextSpan(position, 1);
             var message = $"ERROR: bad character input: {character}";
             Report(span, message);            
         }
+
+        public void ReportUnterminatedString(TextSpan span)
+        {
+            var message = $"Unterminated string literal.";
+            Report(span, message);
+        }
+
 
         public void ReportUnexpectedToken(TextSpan span, SyntaxKind actualKind, SyntaxKind expectedKind)
         {
@@ -79,5 +86,7 @@ namespace PacLang
             var message = $"Variable '{name}' is read-only and cannot be assigned to.";
             Report(span, message);
         }
+
+        
     }
 }

@@ -248,6 +248,7 @@ namespace PacLang.CodeAnalysis.Syntax
                 SyntaxKind.TrueKeyword => ParseBooleanLiteral(),
                 SyntaxKind.FalseKeyword => ParseBooleanLiteral(),
                 SyntaxKind.NumberToken => ParseNumberLiteral(),
+                SyntaxKind.StringToken => ParseStringLiteral(),
                 SyntaxKind.IdentifierToken => ParseNameExpression(),
                 _ => ParseNameExpression()
             };
@@ -271,6 +272,12 @@ namespace PacLang.CodeAnalysis.Syntax
         {
             var numberToken = MatchToken(SyntaxKind.NumberToken);
             return new LiteralExpressionSyntax(numberToken);
+        }
+
+        private ExpressionSyntax ParseStringLiteral()
+        {
+            var stringToken = MatchToken(SyntaxKind.StringToken);
+            return new LiteralExpressionSyntax(stringToken);
         }
 
         private ExpressionSyntax ParseNameExpression()
