@@ -1,4 +1,5 @@
 using PacLang.CodeAnalysis.Syntax;
+using PacLang.Text;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -11,7 +12,7 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
     {
         //45:01
         [Fact]
-        public void Lexe_Lexes_UnterminatedString() 
+        public void Lexer_Lexes_UnterminatedString() 
         {
             var text = "\"text";
             var tokens = SyntaxTree.ParseTokens(text, out var diagnostics);
@@ -19,6 +20,10 @@ namespace PacLang.Tests.CodeAnalysis.Syntax
             var token = Assert.Single(tokens);
             Assert.Equal(SyntaxKind.StringToken, token.Kind);
             Assert.Equal(text, token.Text);
+
+            var diagnostic = Assert.Single(diagnostics);
+            Assert.Equal(new TextSpan(0, 1), diagnostic.Span);
+            Assert.Equal("Unterminated string literal.", diagnostic.Message);            
         }
 
         [Fact]
