@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using PacLang.CodeAnalysis.Syntax;
+using PacLang.Symbols;
 using PacLang.Text;
 
 namespace PacLang

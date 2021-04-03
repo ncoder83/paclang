@@ -1,5 +1,6 @@
 using Pac.CodeAnalysis.Syntax;
 using PacLang.CodeAnalysis.Syntax;
+using PacLang.Symbols;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;

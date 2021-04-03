@@ -2,6 +2,7 @@
 using PacLang;
 using PacLang.Binding;
 using PacLang.CodeAnalysis.Syntax;
+using PacLang.Symbols;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;

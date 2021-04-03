@@ -6,6 +6,7 @@ using System.Threading;
 using Pac.CodeAnalysis.Lowering;
 using PacLang.Binding;
 using PacLang.CodeAnalysis.Syntax;
+using PacLang.Symbols;
 
 namespace PacLang
 {

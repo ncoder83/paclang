@@ -1,4 +1,6 @@
-﻿namespace PacLang.Binding
+﻿using PacLang.Symbols;
+
+namespace PacLang.Binding
 {
     internal sealed class BoundForStatement : BoundStatement
     {

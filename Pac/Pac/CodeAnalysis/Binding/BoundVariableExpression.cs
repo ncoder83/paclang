@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PacLang.Symbols;
+using System;
 
 namespace PacLang.Binding
 {
