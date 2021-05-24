@@ -1,4 +1,5 @@
 ﻿using PacLang.CodeAnalysis.Syntax;
+using PacLang.Symbols;
 using PacLang.Text;
 using System;
 using System.Collections;
@@ -25,7 +26,7 @@ namespace PacLang
             _diagnostics.Add(diagnostic);
         }
 
-        public void ReportInvalidNumber(TextSpan textSpan, string text, Type type)
+        public void ReportInvalidNumber(TextSpan textSpan, string text, TypeSymbol type)
         {
             var message = $"The number {text} isn't a valid {type}.";
             Report(textSpan, message);
@@ -51,13 +52,13 @@ namespace PacLang
             Report(span, message);
         }
 
-        public void ReportUndefinedUnaryOperator(TextSpan span, string operatorText, Type operandType)
+        public void ReportUndefinedUnaryOperator(TextSpan span, string operatorText, TypeSymbol operandType)
         {
             var message = $"Unary operator '{operatorText}' is not defined for type '{operandType}'.";
             Report(span, message);
         }
 
-        public void ReportUndefinedBinaryOperator(TextSpan span, string operatorText, Type leftType, Type rightType)
+        public void ReportUndefinedBinaryOperator(TextSpan span, string operatorText, TypeSymbol leftType, TypeSymbol rightType)
         {
             var message = $"Binary operator '{operatorText}' is not defined for types '{leftType}' and '{rightType}'.";
             Report(span, message);
@@ -75,7 +76,7 @@ namespace PacLang
             Report(span, message);
         }
 
-        public void ReportCannotConvert(TextSpan span, Type fromType, Type toType)
+        public void ReportCannotConvert(TextSpan span, TypeSymbol fromType, TypeSymbol toType)
         {
             var message = $"Cannot convert type '{fromType}' to '{toType}'.";
             Report(span, message);

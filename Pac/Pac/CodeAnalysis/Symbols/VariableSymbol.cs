@@ -10,7 +10,7 @@ namespace PacLang.Symbols
     
     public sealed class VariableSymbol : Symbol
     {
-        internal VariableSymbol(string name, bool isReadOnly, Type type) 
+        internal VariableSymbol(string name, bool isReadOnly, TypeSymbol type) 
             : base(name)
         {            
             IsReadOnly = isReadOnly;
@@ -19,8 +19,6 @@ namespace PacLang.Symbols
 
         public override SymbolKind Kind => SymbolKind.Variable;
         public bool IsReadOnly { get; }
-        public Type Type { get; }
-
-        public override string ToString() => Name;        
+        public TypeSymbol Type { get; }        
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using PacLang.Symbols;
+using System;
 
 namespace PacLang.Binding
 {
@@ -12,7 +13,7 @@ namespace PacLang.Binding
         }
 
         public override BoundNodeKind Kind => BoundNodeKind.UnaryExpression;
-        public override Type Type => Op.ResultType;
+        public override TypeSymbol Type => Op.ResultType;
         public BoundUnaryOperator Op { get; }
         public BoundExpression Operand { get; }
     }
