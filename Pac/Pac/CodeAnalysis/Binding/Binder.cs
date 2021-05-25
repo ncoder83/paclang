@@ -84,8 +84,9 @@ namespace PacLang.Binding
             var upperBound = BindExpression(syntax.UpperBound, TypeSymbol.Int);
 
             _scope = new BoundScope(_scope);
-            
-            var variable = BindVariable(syntax.Identifier, isReadOnly: true, TypeSymbol.Int);
+
+            var isReadOnly = true;
+            var variable = BindVariable(syntax.Identifier, isReadOnly, TypeSymbol.Int);
             var body = BindStatement(syntax.Body);
 
             _scope = _scope.Parent;
