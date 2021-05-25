@@ -157,6 +157,8 @@ namespace PacLang.Binding
         {
             switch (node.Kind)
             {
+                case BoundNodeKind.ErrorExpression:
+                    return RewriteErrorExpression((BoundErrorExpression)node);
                 case BoundNodeKind.LiteralExpression:
                     return RewriteLiteralExpression((BoundLiteralExpression)node);
                 case BoundNodeKind.VariableExpression:
@@ -170,6 +172,11 @@ namespace PacLang.Binding
                 default:
                     throw new Exception($"Unexpected node: {node.Kind}");
             }
+        }
+
+        private BoundExpression RewriteErrorExpression(BoundErrorExpression node)
+        {
+            return node;
         }
 
         protected virtual BoundExpression RewriteLiteralExpression(BoundLiteralExpression node)
