@@ -182,7 +182,6 @@ namespace PacLang.Binding
 
         private BoundExpression BindLiteralExpression(LiteralExpressionSyntax syntax)
         {
-
             var value = syntax.Value ?? 0;
             return new BoundLiteralExpression(value);
         }
@@ -194,16 +193,16 @@ namespace PacLang.Binding
             if (string.IsNullOrEmpty(name))
             {
                 // This means the token was inserted by the parser. We already
-                // reported error se we can just return an error exp
-                return new BoundLiteralExpression(0);
+                // reported error se we can just return an error exp                
+                return new BoundErrorExpression();
             }
             
             if (!_scope.TryLookup(name, out var variable))
             {
                 _diagnostics.ReportUndefinedName(syntax.IdentifierToken.Span, name);
-                return new BoundLiteralExpression(0);
+                return new BoundErrorExpression();
             }
-                    
+
             return new BoundVariableExpression(variable);
         }
 
@@ -233,12 +232,16 @@ namespace PacLang.Binding
         private BoundExpression BindUnaryExpression(UnaryExpressionSyntax syntax)
         {
             var boundOperand = BindExpression(syntax.Operand);
+
+            if (boundOperand.Type == TypeSymbol.Error)
+                return new BoundErrorExpression();
+
             var boundOperator = BoundUnaryOperator.Bind(syntax.OperatorToken.Kind, boundOperand.Type);
 
             if (boundOperator == null)
             {
                 _diagnostics.ReportUndefinedUnaryOperator(syntax.OperatorToken.Span, syntax.OperatorToken.Text, boundOperand.Type);
-                return boundOperand;
+                return new BoundErrorExpression();
             }
 
             return new BoundUnaryExpression(boundOperator, boundOperand);
@@ -248,12 +251,17 @@ namespace PacLang.Binding
         {
             var boundLeft = BindExpression(syntax.Left);
             var boundRight = BindExpression(syntax.Right);
+
+
+            if (boundLeft.Type == TypeSymbol.Error ||boundRight.Type == TypeSymbol.Error)
+                return new BoundErrorExpression();
+
             var boundOperatorKind = BoundBinaryOperator.Bind(syntax.OperatorToken.Kind, boundLeft.Type, boundRight.Type);
 
             if (boundOperatorKind == null)
             {
                 _diagnostics.ReportUndefinedBinaryOperator(syntax.OperatorToken.Span, syntax.OperatorToken.Text, boundLeft.Type, boundRight.Type);
-                return boundLeft;
+                return new BoundErrorExpression();
             }
 
             return new BoundBinaryExpression(boundLeft, boundOperatorKind, boundRight);

@@ -15,11 +15,11 @@ namespace PacLang.Binding
 
 
         // Expressions
+        ErrorExpression,
         LiteralExpression,
         VariableExpression,
         AssigmentExpression,
         UnaryExpression,
-        BinaryExpression,
-        
+        BinaryExpression,        
     }
 }

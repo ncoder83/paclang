@@ -3,10 +3,9 @@ using System;
 
 namespace PacLang.Binding
 {
+
     internal sealed class BoundAssignmentExpression : BoundExpression
     {
-
-
         public BoundAssignmentExpression(VariableSymbol variable, BoundExpression expression)
         {
             Variable = variable;
