@@ -133,7 +133,7 @@ namespace PacLang
 
             switch (b.Op.Kind)
             {
-                case BoundBinaryOperatorKind.Addition:
+                case BoundBinaryOperatorKind.Addition:              
                     if (b.Type == TypeSymbol.Int)
                         return (int)left + (int)right;
                     else
