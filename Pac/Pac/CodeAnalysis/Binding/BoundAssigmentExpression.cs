@@ -1,11 +1,11 @@
-﻿using System;
+﻿using PacLang.Symbols;
+using System;
 
 namespace PacLang.Binding
 {
+
     internal sealed class BoundAssignmentExpression : BoundExpression
     {
-
-
         public BoundAssignmentExpression(VariableSymbol variable, BoundExpression expression)
         {
             Variable = variable;
@@ -15,7 +15,7 @@ namespace PacLang.Binding
         public VariableSymbol Variable { get; }
         public BoundExpression Expression { get; }
 
-        public override Type Type => Expression.Type;
+        public override TypeSymbol Type => Expression.Type;
 
         public override BoundNodeKind Kind => BoundNodeKind.AssigmentExpression;
     }

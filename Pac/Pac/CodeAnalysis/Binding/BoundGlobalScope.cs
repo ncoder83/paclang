@@ -1,4 +1,5 @@
-﻿using System.Collections.Immutable;
+﻿using PacLang.Symbols;
+using System.Collections.Immutable;
 
 namespace PacLang.Binding
 {

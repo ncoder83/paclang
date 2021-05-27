@@ -67,7 +67,6 @@ namespace PacLang.CodeAnalysis.Syntax
             _ => SyntaxKind.IdentifierToken,
         };
 
-
         public static IEnumerable<SyntaxKind> GetUnaryOperatorKinds()
         {
             var kinds = (SyntaxKind[])Enum.GetValues(typeof(SyntaxKind));
@@ -89,7 +88,6 @@ namespace PacLang.CodeAnalysis.Syntax
                     yield return kind;
             }
         }
-
 
         public static string GetText(SyntaxKind kind) => kind switch
         {

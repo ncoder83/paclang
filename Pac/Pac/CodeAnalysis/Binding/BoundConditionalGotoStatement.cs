@@ -2,14 +2,14 @@
 {
     internal sealed class BoundConditionalGotoStatement : BoundStatement
     {
-        public BoundConditionalGotoStatement(LabelSymbol label, BoundExpression condition, bool jumpIfTrue = true)
+        public BoundConditionalGotoStatement(BoundLabel label, BoundExpression condition, bool jumpIfTrue = true)
         {
             Label = label;
             Condition = condition;
             JumpIfTrue = jumpIfTrue;
         }
 
-        public LabelSymbol Label { get; set; }
+        public BoundLabel Label { get; set; }
         public BoundExpression Condition { get; set; }
         public bool JumpIfTrue { get; }
 
