@@ -1,7 +1,7 @@
 ﻿namespace PacLang
 {
     /// <summary>
-    ///  Add string concatenation
+    ///  X - Add string concatenation
     ///  Add highlighting for strings
     ///  Add support for calling built-in functions
     ///  Add support for looking up functions
