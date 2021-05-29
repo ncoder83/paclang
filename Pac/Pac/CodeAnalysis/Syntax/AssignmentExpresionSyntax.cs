@@ -1,5 +1,6 @@
 ﻿namespace PacLang.CodeAnalysis.Syntax
 {
+
     public sealed class AssignmentExpresionSyntax : ExpressionSyntax
     {
         public AssignmentExpresionSyntax(SyntaxToken identifierToken, SyntaxToken equalsToken, ExpressionSyntax expression)
