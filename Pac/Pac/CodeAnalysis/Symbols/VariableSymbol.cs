@@ -2,13 +2,8 @@
 
 namespace PacLang.Symbols
 {
-    public enum SymbolKind
-    {
-        Variable,
-        Type
-    }
-    
-    public sealed class VariableSymbol : Symbol
+
+    public class VariableSymbol : Symbol
     {
         internal VariableSymbol(string name, bool isReadOnly, TypeSymbol type) 
             : base(name)

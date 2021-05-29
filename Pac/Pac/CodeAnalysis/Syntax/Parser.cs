@@ -238,8 +238,6 @@ namespace PacLang.CodeAnalysis.Syntax
             return left;
         }
 
-
-
         private ExpressionSyntax ParsePrimaryExpression()
         {
             return Current.Kind switch
@@ -249,10 +247,12 @@ namespace PacLang.CodeAnalysis.Syntax
                 SyntaxKind.FalseKeyword => ParseBooleanLiteral(),
                 SyntaxKind.NumberToken => ParseNumberLiteral(),
                 SyntaxKind.StringToken => ParseStringLiteral(),
-                SyntaxKind.IdentifierToken => ParseNameExpression(),
-                _ => ParseNameExpression()
+                SyntaxKind.IdentifierToken => ParseNameOrCallExpression(),
+                _ => ParseNameOrCallExpression()
             };
         }
+
+    
 
         private ExpressionSyntax ParseParenthesizedExpression()
         {
@@ -278,6 +278,69 @@ namespace PacLang.CodeAnalysis.Syntax
         {
             var stringToken = MatchToken(SyntaxKind.StringToken);
             return new LiteralExpressionSyntax(stringToken);
+        }
+
+        private ExpressionSyntax ParseNameOrCallExpression()
+        {
+            if (Peek(0).Kind == SyntaxKind.IdentifierToken && Peek(1).Kind == SyntaxKind.OpenParenthesisToken)
+                return ParseCallExpression();
+            else
+                return ParseNameExpression();
+        }
+
+        private ExpressionSyntax ParseCallExpression()
+        {
+            var identifier = MatchToken(SyntaxKind.IdentifierToken);
+            var openParenthesisToken = MatchToken(SyntaxKind.OpenParenthesisToken);
+            var arguments = ParseArguments();
+            var closeParenthesisToken = MatchToken(SyntaxKind.CloseParenthesisToken);
+
+            return new CallExpressionSyntax(identifier, openParenthesisToken, arguments, closeParenthesisToken);
+        }
+
+        private SeparatedSyntaxList<ExpressionSyntax> ParseArguments()
+        {
+            var nodeAndSeparators = ImmutableArray.CreateBuilder<SyntaxNode>();
+
+            while (Current.Kind != SyntaxKind.CloseParenthesisToken &&
+                   Current.Kind != SyntaxKind.EndOfFileToken)
+            {
+                var expression = ParseExpression();
+                nodeAndSeparators.Add(expression);
+
+                if(Current.Kind != SyntaxKind.CloseParenthesisToken)
+                {
+                    var comma = MatchToken(SyntaxKind.CommaToken);
+                    nodeAndSeparators.Add(comma);
+                }
+            }
+
+            return new SeparatedSyntaxList<ExpressionSyntax>(nodeAndSeparators.ToImmutable());
+
+            //var statements = ImmutableArray.CreateBuilder<StatementSyntax>();
+
+            //var openBraceToken = MatchToken(SyntaxKind.OpenBraceToken);
+            //while (Current.Kind != SyntaxKind.EndOfFileToken &&
+            //      Current.Kind != SyntaxKind.CloseBraceToken)
+            //{
+            //    var startToken = Current;
+
+            //    var statement = ParseStatement();
+            //    statements.Add(statement);
+
+            //    // if ParseStatement() did not consume any tokens,
+            //    // we need to skip the current token and continue. We
+            //    // do not need to report an error, because we will
+            //    // already tired to parse an expression statement
+            //    // and reporteed one
+            //    if (Current == startToken)
+            //    {
+            //        NextToken();
+            //    }
+            //}
+
+            //var closeBraceToken = MatchToken(SyntaxKind.CloseBraceToken);
+            //return new BlockStatementSyntax(openBraceToken, statements.ToImmutable(), closeBraceToken);
         }
 
         private ExpressionSyntax ParseNameExpression()

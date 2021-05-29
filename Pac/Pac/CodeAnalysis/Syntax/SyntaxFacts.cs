@@ -113,6 +113,7 @@ namespace PacLang.CodeAnalysis.Syntax
             SyntaxKind.CloseParenthesisToken => ")",
             SyntaxKind.OpenBraceToken => "{",
             SyntaxKind.CloseBraceToken => "}",
+            SyntaxKind.CommaToken => ",",
             SyntaxKind.IfKeyword => "if",
             SyntaxKind.ElseKeyword => "else",
             SyntaxKind.FalseKeyword => "false",
