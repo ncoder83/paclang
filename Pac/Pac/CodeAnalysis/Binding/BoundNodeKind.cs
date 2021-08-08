@@ -22,5 +22,6 @@ namespace PacLang.Binding
         UnaryExpression,
         BinaryExpression,
         CallExpression,
+        ConversionExpression,
     }
 }

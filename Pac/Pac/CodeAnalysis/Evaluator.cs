@@ -93,11 +93,12 @@ namespace PacLang
                 BoundNodeKind.UnaryExpression => EvaluateUnaryExpression((BoundUnaryExpression)expression),
                 BoundNodeKind.BinaryExpression => EvaluateBinaryExpression((BoundBinaryExpression)expression),
                 BoundNodeKind.CallExpression => EvaluateCallExpression((BoundCallExpression)expression),
+                BoundNodeKind.ConversionExpression => EvaluateConversionExpression((BoundConversionExpression)expression),
                 _ => throw new Exception($"Unexpected node {expression.Kind}"),
             };
         }
 
- 
+      
 
         private object EvaluateLiteralExpression(BoundLiteralExpression n)
         {
@@ -207,6 +208,20 @@ namespace PacLang
             {
                 throw new Exception($"Unexpected function {node.Function}.");
             }
+        }
+
+        private object EvaluateConversionExpression(BoundConversionExpression node)
+        {
+            var value = EvaluateExpression(node.Expression);
+
+            if (node.Type == TypeSymbol.Bool)
+                return Convert.ToBoolean(value);
+            else if (node.Type == TypeSymbol.Int)
+                return Convert.ToInt32(value);
+            else if (node.Type == TypeSymbol.String)
+                return Convert.ToString(value);
+            else
+                throw new Exception($"Unexpected type {node.Type}");            
         }
     }
 }

@@ -170,10 +170,13 @@ namespace PacLang.Binding
                     return RewriteBinaryExpression((BoundBinaryExpression)node);
                 case BoundNodeKind.CallExpression:
                     return RewriteCallExpression((BoundCallExpression)node);
+                case BoundNodeKind.ConversionExpression:
+                    return RewriteConversionExpression((BoundConversionExpression)node);
                 default:
                     throw new Exception($"Unexpected node: {node.Kind}");
             }
         }
+
 
         private BoundExpression RewriteErrorExpression(BoundErrorExpression node)
         {
@@ -251,6 +254,18 @@ namespace PacLang.Binding
 
             return new BoundCallExpression(node.Function, builder.MoveToImmutable());
         }
+
+        private BoundExpression RewriteConversionExpression(BoundConversionExpression node)
+        {
+            var expression = RewriteExpression(node.Expression);
+
+            if (expression == node.Expression)
+                return node;
+
+            return new BoundConversionExpression((Symbols.TypeSymbol)node.Type, expression);
+
+        }
+
     }
 
 }

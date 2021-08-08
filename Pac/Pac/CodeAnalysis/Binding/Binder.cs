@@ -11,14 +11,14 @@ namespace PacLang.Binding
 
     internal sealed class Binder
     {
-        private readonly DiagnosticBag _diagnostics = new DiagnosticBag();        
+        private readonly DiagnosticBag _diagnostics = new DiagnosticBag();
 
         private BoundScope _scope;
 
         public Binder(BoundScope parent)
         {
             _scope = new BoundScope(parent);
-         }
+        }
 
         public static BoundGlobalScope BindGlobalScope(BoundGlobalScope previous, CompilationUnitSyntax syntax)
         {
@@ -34,7 +34,7 @@ namespace PacLang.Binding
             return new BoundGlobalScope(previous, diagnostics, variables, expression);
         }
 
-        private static BoundScope CreateParentScopes(BoundGlobalScope previous) 
+        private static BoundScope CreateParentScopes(BoundGlobalScope previous)
         {
             var stack = new Stack<BoundGlobalScope>();
 
@@ -51,21 +51,21 @@ namespace PacLang.Binding
             {
                 previous = stack.Pop();
                 var scope = new BoundScope(parent);
-                foreach (var v in previous.Variables)                
+                foreach (var v in previous.Variables)
                     scope.TryDeclareVariable(v);
-                
+
                 parent = scope;
             }
 
             return parent;
-            
+
         }
 
         private static BoundScope CreateRootScope()
         {
             var result = new BoundScope(null);
 
-            foreach (var f in BuiltinFunctions.GetAll())            
+            foreach (var f in BuiltinFunctions.GetAll())
                 result.TryDeclareFunction(f);
 
             return result;
@@ -93,7 +93,7 @@ namespace PacLang.Binding
             var upperBound = BindExpression(syntax.UpperBound, TypeSymbol.Int);
 
             _scope = new BoundScope(_scope);
-            
+
             var variable = BindVariable(syntax.Identifier, isReadOnly: true, TypeSymbol.Int);
             var body = BindStatement(syntax.Body);
 
@@ -102,12 +102,12 @@ namespace PacLang.Binding
             return new BoundForStatement(variable, lowerBound, upperBound, body);
         }
 
-      
+
         private BoundStatement BindVariableDeclaration(VariableDeclarationSyntax syntax)
         {
             var isReadOnly = syntax.Keyword.Kind == SyntaxKind.LetKeyword;
             var initializer = BindExpression(syntax.Initializer);
-            var variable = BindVariable(syntax.Identifier, isReadOnly, initializer.Type);                        
+            var variable = BindVariable(syntax.Identifier, isReadOnly, initializer.Type);
 
             return new BoundVariableDeclaration(variable, initializer);
         }
@@ -151,7 +151,7 @@ namespace PacLang.Binding
         {
             var result = BindExpression(syntax);
 
-            if(!canBeVoid && result.Type == TypeSymbol.Void)
+            if (!canBeVoid && result.Type == TypeSymbol.Void)
             {
                 _diagnostics.ReportExpressionMustHaveValue(syntax.Span);
                 return new BoundErrorExpression();
@@ -210,7 +210,7 @@ namespace PacLang.Binding
                 // reported error se we can just return an error exp                
                 return new BoundErrorExpression();
             }
-            
+
             if (!_scope.TryLookupVariable(name, out var variable))
             {
                 _diagnostics.ReportUndefinedName(syntax.IdentifierToken.Span, name);
@@ -225,7 +225,7 @@ namespace PacLang.Binding
             var name = syntax.IdentifierToken.Text;
             var boundExpression = BindExpression(syntax.Expression);
 
-            if(!_scope.TryLookupVariable(name, out var variable)) 
+            if (!_scope.TryLookupVariable(name, out var variable))
             {
                 _diagnostics.ReportUndefinedName(syntax.IdentifierToken.Span, name);
                 return boundExpression;
@@ -234,12 +234,12 @@ namespace PacLang.Binding
             if (variable.IsReadOnly)
                 _diagnostics.ReportCannotAssign(syntax.EqualsToken.Span, name);
 
-            if(boundExpression.Type != variable.Type)
+            if (boundExpression.Type != variable.Type)
             {
                 _diagnostics.ReportCannotConvert(syntax.Expression.Span, boundExpression.Type, variable.Type);
                 return boundExpression;
             }
-                        
+
             return new BoundAssignmentExpression(variable, boundExpression);
         }
 
@@ -267,7 +267,7 @@ namespace PacLang.Binding
             var boundRight = BindExpression(syntax.Right);
 
 
-            if (boundLeft.Type == TypeSymbol.Error ||boundRight.Type == TypeSymbol.Error)
+            if (boundLeft.Type == TypeSymbol.Error || boundRight.Type == TypeSymbol.Error)
                 return new BoundErrorExpression();
 
             var boundOperatorKind = BoundBinaryOperator.Bind(syntax.OperatorToken.Kind, boundLeft.Type, boundRight.Type);
@@ -281,9 +281,13 @@ namespace PacLang.Binding
             return new BoundBinaryExpression(boundLeft, boundOperatorKind, boundRight);
         }
 
-
         private BoundExpression BindCallExpression(CallExpressionSyntax syntax)
         {
+
+            if (syntax.Arguments.Count == 1 && LookupType(syntax.Identifier.Text) is TypeSymbol type)
+
+                return BindConversion(type, syntax.Arguments[0]);
+
 
             var boundArguments = ImmutableArray.CreateBuilder<BoundExpression>();
 
@@ -298,14 +302,14 @@ namespace PacLang.Binding
             //var function = functions.SingleOrDefault(f => f.Name == syntax.Identifier.Text);
 
 
-            if(!_scope.TryLookupFunction(syntax.Identifier.Text, out var function))
-            { 
+            if (!_scope.TryLookupFunction(syntax.Identifier.Text, out var function))
+            {
                 _diagnostics.ReportUndefinedFunction(syntax.Identifier.Span, syntax.Identifier.Text);
                 return new BoundErrorExpression();
             }
 
 
-            if(syntax.Arguments.Count != function.Parameter.Length)
+            if (syntax.Arguments.Count != function.Parameter.Length)
             {
                 _diagnostics.ReportWrongArgumentCount(syntax.Identifier.Span, function.Name, function.Parameter.Length, syntax.Arguments.Count);
                 return new BoundErrorExpression();
@@ -317,7 +321,7 @@ namespace PacLang.Binding
                 var argument = boundArguments[i];
                 var parameter = function.Parameter[i];
 
-                if(argument.Type != parameter.Type)
+                if (argument.Type != parameter.Type)
                 {
                     _diagnostics.ReportWrongArgumentType(syntax.Identifier.Span, parameter.Name, parameter.Type, argument.Type);
                     return new BoundErrorExpression();
@@ -328,16 +332,46 @@ namespace PacLang.Binding
             return new BoundCallExpression(function, boundArguments.ToImmutable());
         }
 
-        private VariableSymbol BindVariable(SyntaxToken identifier, bool isReadOnly,  TypeSymbol type)
+        private BoundExpression BindConversion(TypeSymbol type, ExpressionSyntax syntax)
+        {
+            var expression = BindExpression(syntax);
+
+            var conversion = Conversion.Classify(expression.Type, type);
+            if (!conversion.Exists)
+            {
+                _diagnostics.ReportCannotConvert(syntax.Span, expression.Type, type);
+                return new BoundErrorExpression();
+            }
+
+            return new BoundConversionExpression(type, expression);
+        }
+
+        private VariableSymbol BindVariable(SyntaxToken identifier, bool isReadOnly, TypeSymbol type)
         {
             var name = identifier.Text ?? "?";
-            var declare = !identifier.IsMissing;            
+            var declare = !identifier.IsMissing;
             var variable = new VariableSymbol(name, isReadOnly, type);
 
             if (declare && !_scope.TryDeclareVariable(variable))
                 _diagnostics.ReportVariableAlreadyDeclared(identifier.Span, name);
 
             return variable;
+        }
+
+
+        private TypeSymbol LookupType(string name)
+        {
+            switch (name)
+            {
+                case "bool":
+                    return TypeSymbol.Bool;
+                case "int":
+                    return TypeSymbol.Int;
+                case "string":
+                    return TypeSymbol.String;
+                default:
+                    return null;
+            }
         }
     }
 
