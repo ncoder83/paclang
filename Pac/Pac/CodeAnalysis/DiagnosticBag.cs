@@ -100,9 +100,15 @@ namespace PacLang
             Report(span, message);
         }
 
-        internal void ReportWrongArgumentType(TextSpan span, string name, TypeSymbol expectedType, TypeSymbol actualType)
+        public void ReportWrongArgumentType(TextSpan span, string name, TypeSymbol expectedType, TypeSymbol actualType)
         {
             var message = $"Function '{name}' requires a value of type {expectedType} but was given a value of type {actualType}.";
+            Report(span, message);
+        }
+
+        public void ReportExpressionMustHaveValue(TextSpan span)
+        {
+            var message = $"Expression must have a value.";
             Report(span, message);
         }
     }

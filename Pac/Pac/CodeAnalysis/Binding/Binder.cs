@@ -44,7 +44,7 @@ namespace PacLang.Binding
                 previous = previous.Previous;
             }
 
-            BoundScope parent = null;
+            var parent = CreateRootScope();
 
             // submission 3-> submission 2 -> submission 1
             while (stack.Count > 0)
@@ -52,13 +52,23 @@ namespace PacLang.Binding
                 previous = stack.Pop();
                 var scope = new BoundScope(parent);
                 foreach (var v in previous.Variables)                
-                    scope.TryDeclare(v);
+                    scope.TryDeclareVariable(v);
                 
                 parent = scope;
             }
 
             return parent;
             
+        }
+
+        private static BoundScope CreateRootScope()
+        {
+            var result = new BoundScope(null);
+
+            foreach (var f in BuiltinFunctions.GetAll())            
+                result.TryDeclareFunction(f);
+
+            return result;
         }
 
         public DiagnosticBag Diagnostics => _diagnostics;
@@ -119,7 +129,7 @@ namespace PacLang.Binding
 
         private BoundStatement BindExpressionStatement(ExpressionStatementSyntax syntax)
         {
-            var expression = BindExpression(syntax.Expression);
+            var expression = BindExpression(syntax.Expression, canBeVoid: true);
 
             return new BoundExpressionStatement(expression);
         }
@@ -137,22 +147,16 @@ namespace PacLang.Binding
 
             return result;
         }
-
-
-        private BoundStatement BindBlockStatement(BlockStatementSyntax syntax)
+        private BoundExpression BindExpression(ExpressionSyntax syntax, bool canBeVoid = false)
         {
-            var statements = ImmutableArray.CreateBuilder<BoundStatement>();
-            _scope = new BoundScope(_scope);
+            var result = BindExpression(syntax);
 
-            foreach (var statementSyntax in syntax.Statements)
+            if(!canBeVoid && result.Type == TypeSymbol.Void)
             {
-                var statement = BindStatement(statementSyntax);
-                statements.Add(statement);
+                _diagnostics.ReportExpressionMustHaveValue(syntax.Span);
+                return new BoundErrorExpression();
             }
-
-            _scope = _scope.Parent;
-
-            return new BoundBlockStatement(statements.ToImmutable());
+            return result;
         }
 
         private BoundExpression BindExpression(ExpressionSyntax syntax)
@@ -169,8 +173,21 @@ namespace PacLang.Binding
                 _ => throw new Exception($"Unexpected syntax {syntax.Kind}"),
             };
         }
+        private BoundStatement BindBlockStatement(BlockStatementSyntax syntax)
+        {
+            var statements = ImmutableArray.CreateBuilder<BoundStatement>();
+            _scope = new BoundScope(_scope);
 
+            foreach (var statementSyntax in syntax.Statements)
+            {
+                var statement = BindStatement(statementSyntax);
+                statements.Add(statement);
+            }
 
+            _scope = _scope.Parent;
+
+            return new BoundBlockStatement(statements.ToImmutable());
+        }
 
         private BoundExpression BindParenthesizedExpression(ParenthesizedExpressionSyntax expression)
         {
@@ -194,7 +211,7 @@ namespace PacLang.Binding
                 return new BoundErrorExpression();
             }
             
-            if (!_scope.TryLookup(name, out var variable))
+            if (!_scope.TryLookupVariable(name, out var variable))
             {
                 _diagnostics.ReportUndefinedName(syntax.IdentifierToken.Span, name);
                 return new BoundErrorExpression();
@@ -208,7 +225,7 @@ namespace PacLang.Binding
             var name = syntax.IdentifierToken.Text;
             var boundExpression = BindExpression(syntax.Expression);
 
-            if(!_scope.TryLookup(name, out var variable)) 
+            if(!_scope.TryLookupVariable(name, out var variable)) 
             {
                 _diagnostics.ReportUndefinedName(syntax.IdentifierToken.Span, name);
                 return boundExpression;
@@ -277,14 +294,16 @@ namespace PacLang.Binding
 
             }
 
-            var functions = BuiltinFunctions.GetAll();
-            var function = functions.SingleOrDefault(f => f.Name == syntax.Identifier.Text);
+            //var functions = BuiltinFunctions.GetAll();
+            //var function = functions.SingleOrDefault(f => f.Name == syntax.Identifier.Text);
 
-            if(function == null)
-            {
+
+            if(!_scope.TryLookupFunction(syntax.Identifier.Text, out var function))
+            { 
                 _diagnostics.ReportUndefinedFunction(syntax.Identifier.Span, syntax.Identifier.Text);
                 return new BoundErrorExpression();
             }
+
 
             if(syntax.Arguments.Count != function.Parameter.Length)
             {
@@ -306,8 +325,6 @@ namespace PacLang.Binding
 
             }
 
-
-
             return new BoundCallExpression(function, boundArguments.ToImmutable());
         }
 
@@ -317,7 +334,7 @@ namespace PacLang.Binding
             var declare = !identifier.IsMissing;            
             var variable = new VariableSymbol(name, isReadOnly, type);
 
-            if (declare && !_scope.TryDeclare(variable))
+            if (declare && !_scope.TryDeclareVariable(variable))
                 _diagnostics.ReportVariableAlreadyDeclared(identifier.Span, name);
 
             return variable;
