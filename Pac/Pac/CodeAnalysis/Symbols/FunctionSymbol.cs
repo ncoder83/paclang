@@ -4,7 +4,6 @@ namespace PacLang.Symbols
 {
 
 
-
     public sealed class FunctionSymbol : Symbol
     {
         public FunctionSymbol(string name, ImmutableArray<ParameterSymbol> parameter, TypeSymbol type) 
