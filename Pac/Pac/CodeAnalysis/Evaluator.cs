@@ -12,6 +12,7 @@ namespace PacLang
     {
         private readonly BoundBlockStatement _root;
         private readonly Dictionary<VariableSymbol, object> _variables;
+        private Random _random;
         private object _lastValue;
 
         public Evaluator(BoundBlockStatement root, Dictionary<VariableSymbol, object> variables)
@@ -91,10 +92,13 @@ namespace PacLang
                 BoundNodeKind.AssigmentExpression => EvaluateAssigmentExpression((BoundAssignmentExpression)expression),
                 BoundNodeKind.UnaryExpression => EvaluateUnaryExpression((BoundUnaryExpression)expression),
                 BoundNodeKind.BinaryExpression => EvaluateBinaryExpression((BoundBinaryExpression)expression),
+                BoundNodeKind.CallExpression => EvaluateCallExpression((BoundCallExpression)expression),
+                BoundNodeKind.ConversionExpression => EvaluateConversionExpression((BoundConversionExpression)expression),
                 _ => throw new Exception($"Unexpected node {expression.Kind}"),
             };
         }
 
+      
 
         private object EvaluateLiteralExpression(BoundLiteralExpression n)
         {
@@ -133,8 +137,11 @@ namespace PacLang
 
             switch (b.Op.Kind)
             {
-                case BoundBinaryOperatorKind.Addition:
-                    return (int)left + (int)right;
+                case BoundBinaryOperatorKind.Addition:              
+                    if (b.Type == TypeSymbol.Int)
+                        return (int)left + (int)right;
+                    else
+                        return (string)left + (string)right;                   
                 case BoundBinaryOperatorKind.Subtraction:
                     return (int)left - (int)right;
                 case BoundBinaryOperatorKind.Multiplication:
@@ -175,6 +182,46 @@ namespace PacLang
                 default:
                     throw new Exception($"Unexpected binary behavior {b.Op}");
             }
+        }
+
+        private object EvaluateCallExpression(BoundCallExpression node)
+        {
+            if(node.Function == BuiltinFunctions.Input)
+            {
+                return Console.ReadLine();
+            }
+            else if(node.Function == BuiltinFunctions.Print)
+            {
+                var message = (string)EvaluateExpression(node.Arguments[0]);
+                Console.WriteLine(message);
+                return null;
+            }
+            else if (node.Function == BuiltinFunctions.Rnd)
+            {
+                var max = (int)EvaluateExpression(node.Arguments[0]);
+                if (_random == null)
+                    _random = new Random();
+
+                return _random.Next(max);
+            }
+            else
+            {
+                throw new Exception($"Unexpected function {node.Function}.");
+            }
+        }
+
+        private object EvaluateConversionExpression(BoundConversionExpression node)
+        {
+            var value = EvaluateExpression(node.Expression);
+
+            if (node.Type == TypeSymbol.Bool)
+                return Convert.ToBoolean(value);
+            else if (node.Type == TypeSymbol.Int)
+                return Convert.ToInt32(value);
+            else if (node.Type == TypeSymbol.String)
+                return Convert.ToString(value);
+            else
+                throw new Exception($"Unexpected type {node.Type}");            
         }
     }
 }

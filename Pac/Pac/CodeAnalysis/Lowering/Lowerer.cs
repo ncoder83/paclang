@@ -1,4 +1,3 @@
-﻿
 using PacLang;
 using PacLang.Binding;
 using PacLang.CodeAnalysis.Syntax;
@@ -23,11 +22,11 @@ namespace Pac.CodeAnalysis.Lowering
         public static BoundBlockStatement Lower(BoundStatement statement)
         {
             var lowerer = new Lowerer();
-            var result =  lowerer.RewriteStatement(statement);
+            var result = lowerer.RewriteStatement(statement);
             return Flatten(result);
         }
 
-        private static BoundBlockStatement Flatten(BoundStatement statement) 
+        private static BoundBlockStatement Flatten(BoundStatement statement)
         {
             var builder = ImmutableArray.CreateBuilder<BoundStatement>();
             var stack = new Stack<BoundStatement>();
@@ -37,10 +36,10 @@ namespace Pac.CodeAnalysis.Lowering
             {
                 var current = stack.Pop();
 
-                if(current is BoundBlockStatement block) 
+                if (current is BoundBlockStatement block)
                 {
                     foreach (var s in block.Statements.Reverse())
-                        stack.Push(s);                    
+                        stack.Push(s);
                 }
                 else
                 {
@@ -66,8 +65,8 @@ namespace Pac.CodeAnalysis.Lowering
                 var gotoFalse = new BoundConditionalGotoStatement(endLabel, node.Condition, false);
                 var endLabelStatement = new BoundLabelStatement(endLabel);
                 var result = new BoundBlockStatement(ImmutableArray.Create<BoundStatement>(
-                    gotoFalse, 
-                    node.ThenStatement, 
+                    gotoFalse,
+                    node.ThenStatement,
                     endLabelStatement
                 ));
                 return RewriteStatement(result);
@@ -89,15 +88,15 @@ namespace Pac.CodeAnalysis.Lowering
                 //end:
                 var elseLabel = GenerateLabel();
                 var endLabel = GenerateLabel();
-                
+
                 var gotoFalse = new BoundConditionalGotoStatement(elseLabel, node.Condition, false);
                 var gotoEndStatement = new BoundGotoStatement(endLabel);
                 var elseLabelStatement = new BoundLabelStatement(elseLabel);
                 var endLabelStatement = new BoundLabelStatement(endLabel);
 
                 var result = new BoundBlockStatement(ImmutableArray.Create<BoundStatement>(
-                    gotoFalse, 
-                    node.ThenStatement, 
+                    gotoFalse,
+                    node.ThenStatement,
                     gotoEndStatement,
                     elseLabelStatement,
                     node.ElseStatement,
@@ -193,7 +192,7 @@ namespace Pac.CodeAnalysis.Lowering
             var whileStatement = new BoundWhileStatement(condition, whileBlock);
 
             var result = new BoundBlockStatement(ImmutableArray.Create<BoundStatement>(
-                variableDeclaration, 
+                variableDeclaration,
                 upperBoundDeclaration,
                 whileStatement));
             return RewriteStatement(result);

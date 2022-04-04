@@ -20,6 +20,8 @@ namespace PacLang.Binding
         VariableExpression,
         AssigmentExpression,
         UnaryExpression,
-        BinaryExpression,        
+        BinaryExpression,
+        CallExpression,
+        ConversionExpression,
     }
 }

@@ -31,6 +31,7 @@
         CloseBraceToken,
         OpenBraceToken,
         IdentifierToken,
+        CommaToken,
 
         // Keywords
         IfKeyword,
@@ -42,6 +43,7 @@
         WhileKeyword,
         ForKeyword,
         ToKeyword,
+        
 
         // Nodes
         CompilationUnit,
@@ -61,7 +63,8 @@
         BinaryExpression,        
         ParenthesizeExpression,
         AssigmentExpression,
-        ElseClause
+        ElseClause,
+        CallExpression
         
     }
 }

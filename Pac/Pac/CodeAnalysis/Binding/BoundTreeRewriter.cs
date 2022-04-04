@@ -152,7 +152,6 @@ namespace PacLang.Binding
             return new BoundBlockStatement(builder.MoveToImmutable());
         }
 
-
         public virtual BoundExpression RewriteExpression(BoundExpression node)
         {
             switch (node.Kind)
@@ -169,10 +168,15 @@ namespace PacLang.Binding
                     return RewriteUnaryExpression((BoundUnaryExpression)node);
                 case BoundNodeKind.BinaryExpression:
                     return RewriteBinaryExpression((BoundBinaryExpression)node);
+                case BoundNodeKind.CallExpression:
+                    return RewriteCallExpression((BoundCallExpression)node);
+                case BoundNodeKind.ConversionExpression:
+                    return RewriteConversionExpression((BoundConversionExpression)node);
                 default:
                     throw new Exception($"Unexpected node: {node.Kind}");
             }
         }
+
 
         private BoundExpression RewriteErrorExpression(BoundErrorExpression node)
         {
@@ -220,6 +224,48 @@ namespace PacLang.Binding
 
             return new BoundBinaryExpression(left, node.Op, right);
         }
+
+        protected virtual BoundExpression RewriteCallExpression(BoundCallExpression node)
+        {
+            ImmutableArray<BoundExpression>.Builder builder = null;
+
+            for (int i = 0; i < node.Arguments.Length; i++)
+            {
+                var oldArgument = node.Arguments[i];
+                var newArgument = RewriteExpression(oldArgument);
+
+                if (newArgument != oldArgument)
+                {
+                    if (builder == null)
+                    {
+                        builder = ImmutableArray.CreateBuilder<BoundExpression>(node.Arguments.Length);
+
+                        for (int j = 0; j < i; j++)                        
+                            builder.Add(node.Arguments[j]);
+                    }
+                }
+
+                if (builder != null)
+                    builder.Add(newArgument);
+            }
+
+            if (builder == null)
+                return node;
+
+            return new BoundCallExpression(node.Function, builder.MoveToImmutable());
+        }
+
+        private BoundExpression RewriteConversionExpression(BoundConversionExpression node)
+        {
+            var expression = RewriteExpression(node.Expression);
+
+            if (expression == node.Expression)
+                return node;
+
+            return new BoundConversionExpression((Symbols.TypeSymbol)node.Type, expression);
+
+        }
+
     }
 
 }
